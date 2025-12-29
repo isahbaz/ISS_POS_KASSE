@@ -7,12 +7,6 @@ using System.Data;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Windows.Forms.Layout;
-using iss_ebon;
-using iss_Ronsson;
-using Mysqlx.Crud;
-using Newtonsoft.Json.Linq;
-using static Mysqlx.Notice.Warning.Types;
-using System.IO;
 
 namespace IS_KASSE
 {
@@ -324,8 +318,6 @@ namespace IS_KASSE
         public string erpUUID { get; set; }
         public string erpID { get; set; } = "0";
         public string erpArtKey { get; set; }
-        public string pathForAI { get; set; }
-        public double AIScare {  get; set; }   
         public SatisYap()
         {
             /* db baglan = new db();
@@ -390,53 +382,33 @@ namespace IS_KASSE
             {
                 if (coInsert.ExecuteNonQuery() > 0)
                 {
-                    if (this.pathForAI != "") // AI icin Resim Loglama
-                    {
-                        try
-                        {
-                            string AISQL = "INSERT INTO `aiimagelog`( `path`, `score`, `level`, `bonnr`, barcode) VALUES(@path, @score, @level, @bonnr, @barcode)";
-                            MySqlCommand cmdAIIns = new MySqlCommand();
-                            cmdAIIns.Parameters.AddWithValue("@path", this.pathForAI);
-                            cmdAIIns.Parameters.AddWithValue("@score", this.AIScare);
-                            cmdAIIns.Parameters.AddWithValue("@level", 2); //1 :Ögrenem 2:Tahmin
-                            cmdAIIns.Parameters.AddWithValue("@bonnr", this.Fisno); 
-                                 cmdAIIns.Parameters.AddWithValue("@barcode", this.Barkod); 
-                            cmdAIIns.CommandText = AISQL;
-                            cmdAIIns.Connection = conn1;
-                            cmdAIIns.ExecuteNonQuery();
-                        }
-                        catch (Exception ex)
-                        {
-                        }
-
-                    }
-                    else
-                    {
-                    }
+                    // MessageBox.Show("Hersey Yolunda!");
                 }
             }
             catch (MySqlException ex)
             {
+
                 MessageBox.Show("SQL:urun ID:" + this._urunId + ",\n" + this._urunAd +"\n"+ InsertSQL + "\n" + ex.Message + " " + ex.Number);
-                new Log().AddtoLogFile("SQL:" + InsertSQL +
-                "Urunad:" + this.UrunAd + "\n" +
-                "Urunid:"+this.UrunId + "\n"  +
-                "fisno:" + this.Fisno + "\n" +
-                "grupid:" + this.Grubid + "\n" +
-                "mwst:" + this.Mwst + "\n" +
-                "satisfiyat:" + this.Satisfiyat + "\n" +
-                "adet:" + this.Adet + "\n" +
-                "toplamtutar:" + this.Toplamtutar + "\n" +
-                "birimkar:" + this.Birimkar + "\n" +
-                "kasano:" + this.KasaNo + "\n" +
-                "kasiyerno:" + Program.bedID + "\n" +
-                "storno:" + this.Stornodurum+ "\n" +
-                "stornoilgi:" + this.StornoIlgi + "\n" +
-                "barkod:" + this.Barkod + "\n" +
-                "birimid:" + this.Birimid + "\n" +
-                "nettosatisfiyat:" + this.Nettosatisfiyat + "\n" +
-                ex.Message + " " +
-                ex.Number, "Satisyap-295");
+                new Log().AddtoLogFile("SQL:" + InsertSQL + 
+                    "Urunad:" + this.UrunAd + "\n" +
+                    "Urunid:"+this.UrunId + "\n"  +
+                    "fisno:" + this.Fisno + "\n" +
+                    "grupid:" + this.Grubid + "\n" +
+                    "mwst:" + this.Mwst + "\n" +
+                    "satisfiyat:" + this.Satisfiyat + "\n" +
+                    "adet:" + this.Adet + "\n" +
+                    "toplamtutar:" + this.Toplamtutar + "\n" +
+                    "birimkar:" + this.Birimkar + "\n" +
+                    "kasano:" + this.KasaNo + "\n" +
+                    "kasiyerno:" + Program.bedID + "\n" +
+                    "storno:" + this.Stornodurum+ "\n" +
+                    "stornoilgi:" + this.StornoIlgi + "\n" +
+                    "barkod:" + this.Barkod + "\n" +
+                    "birimid:" + this.Birimid + "\n" +
+                    "nettosatisfiyat:" + this.Nettosatisfiyat + "\n" +
+                    ex.Message + " " + 
+                    ex.Number, "Satisyap-295");
+
             }
 
             conn1.Close();

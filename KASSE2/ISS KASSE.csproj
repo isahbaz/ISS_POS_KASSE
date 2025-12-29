@@ -120,9 +120,9 @@
       <HintPath>C:\Program Files (x86)\Component Factory\Krypton Toolkit 4.3.2\Bin\ComponentFactory.Krypton.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="ComponentFactory.Krypton.Workspace, Version=4.3.2.0, Culture=neutral, PublicKeyToken=a87e673e9ecb6e8e" />
-    <Reference Include="Conn, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Conn, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Conn\Conn\bin\Release\Conn.dll</HintPath>
+      <HintPath>..\..\IS KASSE\Conn\Conn\bin\Release\Conn.dll</HintPath>
     </Reference>
     <Reference Include="Digi_ISS">
       <HintPath>..\..\..\..\VS2017\Digi_ISS\Digi_ISS\bin\Debug\Digi_ISS.dll</HintPath>
@@ -221,6 +221,9 @@
     <Reference Include="iss_RechnungsCreate">
       <HintPath>..\..\..\iss_RechnungsCreate\iss_RechnungsCreate\bin\Release\iss_RechnungsCreate.dll</HintPath>
     </Reference>
+    <Reference Include="iss_Ronsson">
+      <HintPath>..\..\IS KASSE\iss_Ronsson\iss_Ronsson\bin\Release\iss_Ronsson.dll</HintPath>
+    </Reference>
     <Reference Include="iss_Satiskalem">
       <HintPath>..\..\..\iss_Satiskalem\iss_Satiskalem\bin\Release\iss_Satiskalem.dll</HintPath>
     </Reference>
@@ -273,7 +276,7 @@
     </Reference>
     <Reference Include="MySql.Data, Version=6.9.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\SERVER_AKKAUF\packages\MySql.Data.9.5.0\lib\net462\MySql.Data.dll</HintPath>
+      <HintPath>..\..\SERVER_AKKAUF\packages\MySql.Data.9.5.0\lib\net462\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="MySqlBackup, Version=2.0.9.2, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -401,21 +404,12 @@
     <Compile Include="F_AchtungAlkohol.Designer.cs">
       <DependentUpon>F_AchtungAlkohol.cs</DependentUpon>
     </Compile>
-<<<<<<< Updated upstream
-=======
-    <Compile Include="F_AI_PosDel.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="F_AI_PosDel.Designer.cs">
-      <DependentUpon>F_AI_PosDel.cs</DependentUpon>
-    </Compile>
     <Compile Include="F_AI_Predict.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="F_AI_Predict.Designer.cs">
       <DependentUpon>F_AI_Predict.cs</DependentUpon>
     </Compile>
->>>>>>> Stashed changes
     <Compile Include="F_AnfangBestand.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -934,15 +928,9 @@
     <EmbeddedResource Include="F_AchtungAlkohol.resx">
       <DependentUpon>F_AchtungAlkohol.cs</DependentUpon>
     </EmbeddedResource>
-<<<<<<< Updated upstream
-=======
-    <EmbeddedResource Include="F_AI_PosDel.resx">
-      <DependentUpon>F_AI_PosDel.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="F_AI_Predict.resx">
       <DependentUpon>F_AI_Predict.cs</DependentUpon>
     </EmbeddedResource>
->>>>>>> Stashed changes
     <EmbeddedResource Include="F_AnfangBestand.resx">
       <DependentUpon>F_AnfangBestand.cs</DependentUpon>
     </EmbeddedResource>

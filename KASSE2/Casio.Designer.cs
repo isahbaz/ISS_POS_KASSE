@@ -30,27 +30,15 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-<<<<<<< Updated upstream
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem(new string[] {
             "",
             "",
             ""}, -1, System.Drawing.SystemColors.WindowText, System.Drawing.SystemColors.Info, new System.Drawing.Font("Verdana", 9F));
-            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem5 = new System.Windows.Forms.ListViewItem(new string[] {
             "",
             "",
             ""}, -1, System.Drawing.SystemColors.WindowText, System.Drawing.SystemColors.Info, new System.Drawing.Font("Verdana", 9F));
-            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem(new string[] {
-=======
-            System.Windows.Forms.ListViewItem listViewItem7 = new System.Windows.Forms.ListViewItem(new string[] {
-            "",
-            "",
-            ""}, -1, System.Drawing.SystemColors.WindowText, System.Drawing.SystemColors.Info, new System.Drawing.Font("Verdana", 9F));
-            System.Windows.Forms.ListViewItem listViewItem8 = new System.Windows.Forms.ListViewItem(new string[] {
-            "",
-            "",
-            ""}, -1, System.Drawing.SystemColors.WindowText, System.Drawing.SystemColors.Info, new System.Drawing.Font("Verdana", 9F));
-            System.Windows.Forms.ListViewItem listViewItem9 = new System.Windows.Forms.ListViewItem(new string[] {
->>>>>>> Stashed changes
+            System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem(new string[] {
             ""}, -1, System.Drawing.SystemColors.WindowText, System.Drawing.SystemColors.Info, new System.Drawing.Font("Tahoma", 9.75F));
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Casio));
             this.kryptonPanel1 = new ComponentFactory.Krypton.Toolkit.KryptonPanel();
@@ -155,7 +143,7 @@
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.kryptonButton48 = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.kryptonButton49 = new ComponentFactory.Krypton.Toolkit.KryptonButton();
-            this.kryptonButton50 = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+            this.btnAIimage = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.btnKiste = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.btnKameraCheck = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.kryptonButton53 = new ComponentFactory.Krypton.Toolkit.KryptonButton();
@@ -219,15 +207,9 @@
             this.listView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.listView1.HideSelection = false;
             this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-<<<<<<< Updated upstream
-            listViewItem1,
-            listViewItem2,
-            listViewItem3});
-=======
-            listViewItem7,
-            listViewItem8,
-            listViewItem9});
->>>>>>> Stashed changes
+            listViewItem4,
+            listViewItem5,
+            listViewItem6});
             this.listView1.Location = new System.Drawing.Point(0, 29);
             this.listView1.MultiSelect = false;
             this.listView1.Name = "listView1";
@@ -2064,10 +2046,8 @@
             // 
             this.toolStripStatusLabel11.Font = new System.Drawing.Font("Arial Rounded MT Bold", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolStripStatusLabel11.Name = "toolStripStatusLabel11";
-            this.toolStripStatusLabel11.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.toolStripStatusLabel11.Size = new System.Drawing.Size(109, 17);
             this.toolStripStatusLabel11.Text = "0 2202 7059900";
-            this.toolStripStatusLabel11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // toolStripStatusLabel12
             // 
@@ -2330,7 +2310,7 @@
             this.flowLayoutPanel2.Controls.Add(this.panel4);
             this.flowLayoutPanel2.Controls.Add(this.kryptonButton48);
             this.flowLayoutPanel2.Controls.Add(this.kryptonButton49);
-            this.flowLayoutPanel2.Controls.Add(this.kryptonButton50);
+            this.flowLayoutPanel2.Controls.Add(this.btnAIimage);
             this.flowLayoutPanel2.Controls.Add(this.btnKiste);
             this.flowLayoutPanel2.Controls.Add(this.btnKameraCheck);
             this.flowLayoutPanel2.Controls.Add(this.kryptonButton53);
@@ -2434,41 +2414,19 @@
             this.kryptonButton49.TabIndex = 39;
             this.kryptonButton49.Values.Text = "";
             // 
-            // kryptonButton50
+            // btnAIimage
             // 
-<<<<<<< Updated upstream
-            this.kryptonButton50.Location = new System.Drawing.Point(875, 3);
-            this.kryptonButton50.Name = "kryptonButton50";
-            this.kryptonButton50.Size = new System.Drawing.Size(135, 100);
-            this.kryptonButton50.StateCommon.Back.Color1 = System.Drawing.Color.White;
-            this.kryptonButton50.StateCommon.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.kryptonButton50.StateCommon.Border.Color1 = System.Drawing.Color.OliveDrab;
-            this.kryptonButton50.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.kryptonButton50.StateCommon.Border.Rounding = 2;
-            this.kryptonButton50.StateCommon.Border.Width = 2;
-            this.kryptonButton50.StateCommon.Content.Image.ImageH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.kryptonButton50.StateCommon.Content.Image.ImageV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
-            this.kryptonButton50.StateCommon.Content.ShortText.Color1 = System.Drawing.Color.Black;
-            this.kryptonButton50.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Arial Narrow", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.kryptonButton50.StateCommon.Content.ShortText.Image = global::IS_KASSE.Properties.Resources.artificial_intelligence;
-            this.kryptonButton50.StateNormal.Back.Image = global::IS_KASSE.Properties.Resources.artificial_intelligence;
-            this.kryptonButton50.StateNormal.Back.ImageStyle = ComponentFactory.Krypton.Toolkit.PaletteImageStyle.Stretch;
-            this.kryptonButton50.TabIndex = 40;
-            this.kryptonButton50.Values.Text = "";
-=======
             this.btnAIimage.Location = new System.Drawing.Point(875, 3);
             this.btnAIimage.Name = "btnAIimage";
             this.btnAIimage.Size = new System.Drawing.Size(135, 100);
             this.btnAIimage.StateCommon.Back.Color1 = System.Drawing.Color.White;
             this.btnAIimage.StateCommon.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Solid;
-            this.btnAIimage.StateCommon.Border.Color1 = System.Drawing.Color.CornflowerBlue;
+            this.btnAIimage.StateCommon.Border.Color1 = System.Drawing.Color.OliveDrab;
             this.btnAIimage.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.btnAIimage.StateCommon.Border.Rounding = 2;
-            this.btnAIimage.StateCommon.Border.Width = 3;
+            this.btnAIimage.StateCommon.Border.Width = 2;
             this.btnAIimage.StateCommon.Content.Image.ImageH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
             this.btnAIimage.StateCommon.Content.Image.ImageV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
             this.btnAIimage.StateCommon.Content.ShortText.Color1 = System.Drawing.Color.Black;
@@ -2476,16 +2434,9 @@
             this.btnAIimage.StateCommon.Content.ShortText.Image = global::IS_KASSE.Properties.Resources.artificial_intelligence;
             this.btnAIimage.StateNormal.Back.Image = global::IS_KASSE.Properties.Resources.artificial_intelligence;
             this.btnAIimage.StateNormal.Back.ImageStyle = ComponentFactory.Krypton.Toolkit.PaletteImageStyle.Stretch;
-            this.btnAIimage.StatePressed.Border.Color1 = System.Drawing.Color.CornflowerBlue;
-            this.btnAIimage.StatePressed.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.btnAIimage.StatePressed.Border.Rounding = 2;
-            this.btnAIimage.StatePressed.Border.Width = 3;
             this.btnAIimage.TabIndex = 40;
             this.btnAIimage.Values.Text = "";
             this.btnAIimage.Click += new System.EventHandler(this.btnAIimage_Click);
->>>>>>> Stashed changes
             // 
             // btnKiste
             // 
@@ -2731,7 +2682,7 @@
         private System.Windows.Forms.TextBox txtSearch;
         private ComponentFactory.Krypton.Toolkit.KryptonButton kryptonButton48;
         private ComponentFactory.Krypton.Toolkit.KryptonButton kryptonButton49;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton kryptonButton50;
+        private ComponentFactory.Krypton.Toolkit.KryptonButton btnAIimage;
         private ComponentFactory.Krypton.Toolkit.KryptonButton btnKiste;
         private ComponentFactory.Krypton.Toolkit.KryptonButton btnKameraCheck;
         private ComponentFactory.Krypton.Toolkit.KryptonButton kryptonButton53;

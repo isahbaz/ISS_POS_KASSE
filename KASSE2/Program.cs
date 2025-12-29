@@ -197,6 +197,10 @@ namespace IS_KASSE
         public static string ReaGerateTyp = "";
         static Logger ProgLog = new Logger("LOG\\SYSTEMSTART\\PROGRAM");
         public static User userClass = null;
+        public static string AILibImage = "";
+        public static string Cam1 = "";
+        public static string Cam2 = "";
+        public static string Cam3 = "";
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -388,6 +392,15 @@ namespace IS_KASSE
                    // Modus = "Kiosk";
                     ProgramAyarlar.Add("Modus", Modus);
                     //MessageBox.Show(WPORT + SPORT + KPORT + ServerIp);
+                    AILibImage = reg.Read("AILibImage");
+                    ProgramAyarlar.Add("AILibImage", AILibImage);
+
+                    Cam1 = reg.Read("Cam1");
+                    ProgramAyarlar.Add("Cam1", Cam1);
+                    Cam2 = reg.Read("Cam2");
+                    ProgramAyarlar.Add("Cam2", Cam2);
+                    Cam3 = reg.Read("Cam3");
+                    ProgramAyarlar.Add("Cam3", Cam3);
 
                 }
                 catch (Exception ee)

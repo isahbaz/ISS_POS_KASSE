@@ -1,4 +1,5 @@
-﻿using ComponentFactory.Krypton.Toolkit;
+﻿using AForge.Video.DirectShow;
+using ComponentFactory.Krypton.Toolkit;
 using Conn;
 using Digi_ISS;
 using ept_extended;
@@ -13,11 +14,13 @@ using iss_Rabat;
 using iss_Rea;
 using iss_RechnungPrintClass;
 using iss_RechnungsCreate;
+using iss_Ronsson;
 using iss_Satiskalem;
 using iss_tse_v2;
 using Microsoft.PointOfService;
 using MySql.BackUp;
 using MySql.Data.MySqlClient;
+using Newtonsoft.Json.Linq;
 using POS.Devices;
 using RC_V1;
 using System;
@@ -37,8 +40,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
-using AForge;
-using AForge.Video.DirectShow;
+
+
 namespace IS_KASSE
 {
     public partial class Casio : Form
@@ -144,20 +147,10 @@ namespace IS_KASSE
         FisOlustur yazilacakBon;
         dbConn baglanti = new dbConn();
         MySqlConnection myConn;
-<<<<<<< Updated upstream
-=======
         VideoCaptureDevice videoSource;
         VideoCaptureDevice videoSource2;
-        private Bitmap _lastFrame1;
-        private Bitmap _lastFrame2;
-        private readonly object _frameLock1 = new object();
-        private readonly object _frameLock2 = new object();
-        private int AIRegImageCOunt = 0;
-
-        iss_smart_AI AILIB;
-        string pathForAI = "";
-        double AIScore;
->>>>>>> Stashed changes
+        private Bitmap _lastFrame;
+        private readonly object _frameLock = new object();
         public Casio()
         {
             myConn = baglanti.myconn();
@@ -1166,10 +1159,6 @@ namespace IS_KASSE
             {
                 new Thread((ThreadStart)(() => HandyCardListeLoad())).Start();
             }
-<<<<<<< Updated upstream
-        }
-
-=======
             FilterInfoCollection videosources = new FilterInfoCollection(FilterCategory.VideoInputDevice);
             if ((Program.ProgramAyarlar["Cam1"] != "") && (Program.ProgramAyarlar["Cam1"] != null))
             {
@@ -1178,14 +1167,9 @@ namespace IS_KASSE
                 {
                     cbbKameras.Items.Add(videosources[i].Name);
                 }*/
-                if (Program.ProgramAyarlar["AILibImage"] == "Rx")
-                {
-                    AILIB = new iss_smart_AI();
-                    AILIB.Login();
-                }
                 if (videosources.Count == 1)
                 {
-                    videoSource = new VideoCaptureDevice(videosources[Convert.ToInt16(Program.ProgramAyarlar["Cam1"]) - 1].MonikerString);
+                    videoSource = new VideoCaptureDevice(videosources[0].MonikerString);
                     //label2.Visible = false;
 
                     videoSource.NewFrame += new AForge.Video.NewFrameEventHandler(videoSource_NewFrame1);
@@ -1195,15 +1179,9 @@ namespace IS_KASSE
             }
             if ((Program.ProgramAyarlar["Cam2"] != "") && (Program.ProgramAyarlar["Cam2"] != null))
             {
-                videoSource = new VideoCaptureDevice(videosources[Convert.ToInt16(Program.ProgramAyarlar["Cam1"]) - 1].MonikerString);
-                //label2.Visible = false;
-                SetLowestResolution(videoSource);
 
-                videoSource.NewFrame += new AForge.Video.NewFrameEventHandler(videoSource_NewFrame1);
-                videoSource.Start();
+                videoSource2 = new VideoCaptureDevice(videosources[1].MonikerString);
 
-                videoSource2 = new VideoCaptureDevice(videosources[Convert.ToInt16(Program.ProgramAyarlar["Cam2"]) - 1].MonikerString);
-                SetLowestResolution(videoSource2);
                 videoSource2.NewFrame += new AForge.Video.NewFrameEventHandler(videoSource_NewFrame2);
 
                 videoSource2.Start();
@@ -1212,34 +1190,22 @@ namespace IS_KASSE
         }
         void videoSource_NewFrame1(object sender, AForge.Video.NewFrameEventArgs eventArgs)
         {
-            lock (_frameLock1)
+            lock (_frameLock)
             {
-                _lastFrame1?.Dispose();
-                _lastFrame1 = (Bitmap)eventArgs.Frame.Clone();
+                _lastFrame?.Dispose();
+                _lastFrame = (Bitmap)eventArgs.Frame.Clone();
             }
-            //pictureBox1.Image = (Bitmap)eventArgs.Frame.Clone();
+            // pictureBox1.Image = (Bitmap)eventArgs.Frame.Clone();
         }
         void videoSource_NewFrame2(object sender, AForge.Video.NewFrameEventArgs eventArgs)
         {
 
-            lock (_frameLock2)
+            lock (_frameLock)
             {
-                _lastFrame2?.Dispose();
-                _lastFrame2 = (Bitmap)eventArgs.Frame.Clone();
+                _lastFrame?.Dispose();
+                _lastFrame = (Bitmap)eventArgs.Frame.Clone();
             }
-            // pictureBox2.Image = (Bitmap)eventArgs.Frame.Clone();
         }
-        private static void SetLowestResolution(VideoCaptureDevice cam)
-        {
-            var caps = cam.VideoCapabilities;
-            if (caps == null || caps.Length == 0) return;
-
-            // En düşük piksel çözünürlüğü seç
-            cam.VideoResolution = caps
-                .OrderBy(c => c.FrameSize.Width * c.FrameSize.Height)
-                .First();
-        }
->>>>>>> Stashed changes
         private void HandyCardListeLoad()
         {
             /* Handy = new iss_HandyAuflade_Main();
@@ -1422,20 +1388,15 @@ namespace IS_KASSE
                 }
                 else if (Program.GlobalAyarlar["WAAGE"] == 1) //Teraziden Okuma
                 {
-<<<<<<< Updated upstream
-=======
                     Bitmap snap = null;
                     if ((Program.ProgramAyarlar["Cam1"] != "") && (Program.ProgramAyarlar["Cam1"] != null))
                     {
-                        videoSource.Start();
-                        lock (_frameLock1)
+                        lock (_frameLock)
                         {
-                            if (_lastFrame1 != null)
-                                snap = (Bitmap)_lastFrame1.Clone();
+                            if (_lastFrame != null)
+                                snap = (Bitmap)_lastFrame.Clone();
                         }
-                        videoSource.SignalToStop();
                     }
->>>>>>> Stashed changes
                     try
                     {
                         Dictionary<object, object> Info = new Dictionary<object, object>();
@@ -1461,6 +1422,22 @@ namespace IS_KASSE
 
                             if (arananArtikel.urunvarmi == true)
                             {
+                                if (snap != null)
+                                {
+                                    try
+                                    {
+                                        string path = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "AI\\image\\" + tarih.unixdate(DateTime.Now) + ".jpg");
+                                        snap.Save(path, System.Drawing.Imaging.ImageFormat.Jpeg);
+                                        CheckForIllegalCrossThreadCalls = false;
+                                        Thread ObstGemStkAI = new Thread(() => this.GenericRegisterImage(path, gelenBarkod));
+                                        ObstGemStkAI.Start();
+
+                                    }
+                                    finally
+                                    {
+                                        snap.Dispose();
+                                    }
+                                }
                                 Info.Clear();
                                 if (arananArtikel.VkPreis <= 0)
                                 {
@@ -1688,35 +1665,16 @@ namespace IS_KASSE
             }
             else if (btnTiklanan.TabIndex == 2)
             {
-<<<<<<< Updated upstream
-                /* F_WaageManuel frmmanual = new F_WaageManuel();
-                 frmmanual.ShowDialog();
-=======
                 Bitmap snap = null;
                 if ((Program.ProgramAyarlar["Cam1"] != "") && (Program.ProgramAyarlar["Cam1"] != null))
                 {
-
-                    lock (_frameLock1)
+                    lock (_frameLock)
                     {
-                        if (_lastFrame1 != null)
-                            snap = (Bitmap)_lastFrame1.Clone();
+                        if (_lastFrame != null)
+                            snap = (Bitmap)_lastFrame.Clone();
                     }
-                    //videoSource.Stop();
                 }
->>>>>>> Stashed changes
 
-                 if (frmmanual.sonuc == true)
-                 {
-               SatilanAdet = frmmanual.adet;
-               SatisFiyat = frmmanual.fiyat;
-               txtGiris.Text = SatilanAdet + "x" + SatisFiyat;
-                 }
-                 else
-                 {
-               return;
-                 }*/
-                //Mayddfgdfgdanoz\n1.99 €/Kg\n\r[221]\n
-                //Mayddfgdfgdanoz\n[221] Kg/€:1,99
 
                 using (F_ObstGemuseStuck frmobstGemuseStuck = new F_ObstGemuseStuck())
                 {
@@ -1754,332 +1712,23 @@ namespace IS_KASSE
                     if (frmobstGemuseStuck.sonuc == true)
                     {
                         gelenBarkod = frmobstGemuseStuck.Barcode;
+                        if (snap != null)
+                        {
+                            try
+                            {
+                                string path = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "AI\\image\\" + tarih.unixdate(DateTime.Now) + ".jpg");
+                                snap.Save(path, System.Drawing.Imaging.ImageFormat.Jpeg);
+                                CheckForIllegalCrossThreadCalls = false;
+                                Thread ObstGemStkAI = new Thread(() => this.GenericRegisterImage(path, gelenBarkod));
+                                ObstGemStkAI.Start();
+
+                            }
+                            finally
+                            {
+                                snap.Dispose();
+                            }
+                        }
                         barkodluUrunEkle();
-                        /*
-                        SatisFiyat = frmobstGemuseStuck.fiyat;
-                        urunad = frmobstGemuseStuck.UrunAd;
-                        urunad = urunad.Remove(urunad.IndexOf("\n"));
-                        karmiktari = frmobstGemuseStuck.karmiktari;
-                        artikelid = frmobstGemuseStuck.artikelid;
-                        pfandid = frmobstGemuseStuck.pfandid;
-                        grupTur = 0;
-
-                        if (txtGiris.Text != "")
-                        {
-                            if (double.TryParse(txtGiris.Text, out SatilanAdet))
-                            {
-                            }
-                            else
-                            {
-                                F_GenericError frmerror = new F_GenericError();
-                                frmerror.lblMesaj.Text = Program.lang["63"];
-                                frmerror.ShowDialog();
-                                SatilanAdet = 1;
-                            }
-
-                        }
-                        else
-                        {
-                            SatilanAdet = 1;
-                        }
-                        if (SatilanAdet == 0)
-                        {
-                            SatilanAdet = adet;
-                        }
-                        if (SatilanAdet > 0)
-                        {
-                            if (SatilanAdet == 0) return;
-                            if (SatisFiyat == 0) return;
-                            Tarih tarih = new Tarih();
-                            satisYap = new SatisYap();
-                            satisYap.Barkod = frmobstGemuseStuck.Barcode;
-                            satisYap.Adet = SatilanAdet;//
-                            //satisYap.Fisno = yeniFis.SatisAnaId;
-                            satisYap.KasaNo = Program.kasano;
-                            satisYap.Mwst = Convert.ToInt16(btnTiklanan.Tag);
-                            satisYap.Ustid_id = satisYap.Mwst == 7 ? ((int)UstIdEnum.mwst7) : (satisYap.Mwst == 19 ? (int)UstIdEnum.mwst19 : (int)UstIdEnum.mwst0);
-                            satisYap.Satisfiyat = SatisFiyat;//
-                            satisYap.Birimid = 1;
-                            if (urunad.Substring(0, 1) == "*")
-                            {
-                                satisYap.Angebotvarmi = 1;
-
-                            }
-                            else
-                            {
-                                if (new ArtikelGrup(Convert.ToInt16(btnTiklanan.Name)).Rabatpunkte != 1)
-                                {
-                                    satisYap.Angebotvarmi = 1;
-                                    angebotSembol = "*";
-                                }
-                                else
-                                {
-                                    satisYap.Angebotvarmi = 0;
-                                    angebotSembol = "";
-                                }
-                            }
-                            satisYap.Tarih = tarih.unixdate(DateTime.Now);
-                            if (counter_waage == 1)
-                            {
-                                satisYap.Toplamtutar = WaageTutar;
-                            }
-                            else
-                            {
-                                satisYap.Toplamtutar = Math.Round(SatisFiyat * SatilanAdet, 2);
-                            }
-                            if (satisYap.Toplamtutar >= 50)
-                            {
-
-                                F_GrossSummeBesteatigung frmSumme = new F_GrossSummeBesteatigung();
-                                frmSumme.summe = satisYap.Toplamtutar;
-                                frmSumme.ShowDialog();
-                                if (frmSumme.bestatigung != 1)
-                                {
-                                    satisYap = null;
-                                    return;
-                                }
-
-                            }
-
-                            satisYap.UrunId = artikelid;//
-                            satisYap.Birimkar = karmiktari;//
-                            satisYap.Grubid = Convert.ToInt16(btnTiklanan.Name);
-                            satisYap.UrunAd = angebotSembol + urunad;//
-                            satisYap.Gruptur = grupTur;
-                            //
-                            if (Program.IsletmeAyarlar["markt"] == "2")
-                            {
-
-                                F_FeinKostBedinerAuswahl FUserAuswahl = new F_FeinKostBedinerAuswahl();
-                                FUserAuswahl.satilanPozition = satisYap;
-                                FUserAuswahl.UserList = UserList;
-                                FUserAuswahl.ShowDialog();
-                                if (FUserAuswahl.SecilenUser != -1)
-                                {
-                                    FisOlustur ElemanFisi = verkauferList[FUserAuswahl.SecilenUser];
-                                    toolStripStatusLabel1.Text = Program.lang["13"] + " :" + verkauferList[FUserAuswahl.SecilenUser];
-                                    yeniFis = null;
-                                    if (ElemanFisi == null)
-                                    {
-                                        FisOlustur yeniFis1 = new FisOlustur();
-                                        yeniFis = YeniVerkauferFisiOlustur(ref yeniFis1, FUserAuswahl.SecilenUser);
-                                        yeniFis.kasiyerno = Convert.ToInt16(FUserAuswahl.SecilenUser);
-                                        toolStripStatusLabel1.Text = Program.lang["13"] + " :" + yeniFis.kasiyerno;
-                                        KundenDisplay();
-                                        satisYap.Fisno = yeniFis.SatisAnaId;
-                                    }
-                                    else
-                                    {
-                                        FisOlustur yeniFis1 = new FisOlustur();
-                                        yeniFis = YeniVerkauferFisiOlustur(ref yeniFis1, FUserAuswahl.SecilenUser);
-                                        yeniFis = ElemanFisi;
-                                        toolStripStatusLabel1.Text = Program.lang["13"] + " :" + verkauferList[FUserAuswahl.SecilenUser].kasiyerno;
-                                        satisYap.Fisno = yeniFis.SatisAnaId;
-                                        listView1.Items.Clear();
-                                        KundenDisplay();
-                                        int num2 = 1;
-                                        int count = listView1.Items.Count;
-                                        foreach (SatisYap satisYapEski in yeniFis.SatisKalem)
-                                        {
-
-                                            listView1.Items.Add(num2.ToString());
-                                            listView1.Items[count].SubItems.Add(satisYapEski.UrunAd.ToString() + "(" + (satisYapEski.Gruptur != 3 ? satisYapEski.Adet.ToString() + " Stk." : satisYapEski.Adet.ToString() + "kg.") + "x" + (satisYapEski.Gruptur != 3 ? satisYapEski.Satisfiyat.ToString("C") + "/Stk." : satisYapEski.Satisfiyat.ToString("C") + "/kg.") + ")");
-                                            listView1.Items[count].SubItems.Add(satisYapEski.Toplamtutar.ToString("C"));
-                                            KDikinciSatiraYaz("TOTAL : " + yeniFis.toplamtutar.ToString());
-                                            DSPINFO(satisYapEski.UrunAd, satisYapEski.Gruptur != 3 ? satisYapEski.Adet.ToString() + " Stk." : satisYapEski.Adet.ToString() + "kg.", satisYapEski.Gruptur != 3 ? satisYapEski.Satisfiyat.ToString("C") + "/Stk." : satisYapEski.Satisfiyat.ToString("C") + "/kg.", satisYapEski.Toplamtutar.ToString("C"), "TOTAL :" + yeniFis.toplamtutar.ToString("C"), 0, 0, 0, 0);
-                                            ++num2;
-                                            count++;
-                                        }
-                                        position = num2;
-                                        yeniFis.FisiKapat();
-
-
-                                    }
-                                    yeniFis.SatisKalem.Add(satisYap);
-                                    LastPos = satisYap;
-                                }
-                                else
-                                {
-                                    return;
-                                }
-                            }
-                            else
-                            {
-                                satisYap.Fisno = yeniFis.SatisAnaId;
-                                yeniFis.SatisKalem.Add(satisYap);
-                                LastPos = satisYap;
-                            }
-
-                            //
-                            int listViewElaman = listView1.Items.Count;
-                            listView1.Items.Add(position.ToString());
-                            if (Program.Waage == 2)
-                            {
-                                listView1.Items[listViewElaman].SubItems.Add(angebotSembol + urunad + " (" + SatilanAdet.ToString("C") + "x" + SatisFiyat.ToString("C") + ")");
-                            }
-                            else
-                            {
-                                if (counter_waage == 1)
-                                {
-                                    listView1.Items[listViewElaman].SubItems.Add(angebotSembol + urunad + " (" + SatilanAdet.ToString("#0.000") + "kg x" + SatisFiyat.ToString("C") + "/kg)");
-                                }
-                                else
-                                {
-                                    listView1.Items[listViewElaman].SubItems.Add(angebotSembol + urunad + " (" + SatilanAdet.ToString() + "St. x" + SatisFiyat.ToString("C") + "/St.)");
-                                }
-
-                            }
-
-                            listView1.Items[listViewElaman].SubItems.Add(satisYap.Toplamtutar.ToString("C"));
-                            if (listView1.Items.Count > 0)
-                            {
-                                listView1.Items[listView1.Items.Count - 1].EnsureVisible();
-                            }
-
-                            yeniFis.FisiKapat();
-                            txtToplam.Text = "TOTAL : " + yeniFis.toplamtutar.ToString("C");
-                            position++;
-                            ///
-                            if (pfandid != 0)
-                            {
-                                Artikel furun = new Artikel();
-                                furun.ArtikelBul(pfandid.ToString());
-                                if (furun.urunvarmi == true)
-                                {
-                                    satisYap = new SatisYap();
-                                    satisYap.Adet = SatilanAdet;
-                                    satisYap.Fisno = yeniFis.SatisAnaId;
-                                    satisYap.Barkod = furun.BarkodNo;
-                                    satisYap.KasaNo = Program.kasano;
-                                    satisYap.Mwst = furun.Mwst;
-                                    satisYap.Ustid_id = satisYap.Mwst == 7 ? ((int)UstIdEnum.mwst7) : (satisYap.Mwst == 19 ? (int)UstIdEnum.mwst19 : (int)UstIdEnum.mwst0);
-                                    satisYap.Satisfiyat = furun.VkPreis;
-                                    satisYap.Tarih = tarih.unixdate(DateTime.Now);
-                                    satisYap.Toplamtutar = Math.Round(furun.VkPreis * SatilanAdet, 2);
-                                    satisYap.UrunId = furun.ArtikelId;
-                                    satisYap.UrunAd = furun.ArtikelAd;
-                                    satisYap.Birimkar = (furun.VkPreis - furun.EkPreis) * SatilanAdet;
-                                    satisYap.Grubid = furun.Grubid;
-                                    satisYap.Fand = 1;
-                                    satisYap.Gv_typ_id = (int)GVTypEnum.Pfand;
-                                    satisYap.Birimid = 1;
-                                    yeniFis.SatisKalem.Add(satisYap);
-                                    listViewElaman = listView1.Items.Count;
-                                    listView1.Items.Add("");
-                                    listView1.Items[listViewElaman].SubItems.Add(furun.ArtikelAd.ToString() + "(" + SatilanAdet + "x" + furun.VkPreis.ToString("C") + ")");
-                                    listView1.Items[listViewElaman].SubItems.Add(satisYap.Toplamtutar.ToString("C"));
-                                    //listView1.SelectedItems[listView1.Items.Count - 1].Focused = true;
-                                    txtGiris.Text = "";
-                                    yeniFis.FisiKapat();
-                                    txtToplam.Text = "TOTAL : " + yeniFis.toplamtutar.ToString("C");
-                                    position++;
-                                }
-                            }
-                            txtGiris.Text = "";
-
-
-
-
-                            pfandid = 0;
-                            //KDbirinciSatiraYaz(urunad, String.Format("{0:n}", SatilanAdet) + "x" + SatisFiyat.ToString());
-                            if (dsp != null)
-                            {
-                                if (Program.displayType != "IBM")
-                                {
-                                    if (counter_waage == 1)
-                                    {
-                                        // KDbirinciSatiraYaz(urunad, SatilanAdet.ToString() + "Kg. x" + SatisFiyat.ToString() + "€/Kg");
-                                        //KDikinciSatiraYaz("TOTAL : " + yeniFis.toplamtutar.ToString()+"€");
-                                        KDbirinciSatiraYaz(urunad, "");
-                                        KDikinciSatiraYaz(SatilanAdet.ToString("#0.000") + "kg x " + SatisFiyat.ToString("C") + "/kg");
-                                        // knddsply.VerkaufInfo(urunad + "\n" + satisYap.Adet.ToString("#0.000") + "kg x " + satisYap.Satisfiyat.ToString("C") + "/kg", "TOTAL :" + yeniFis.toplamtutar.ToString("C"));
-                                        DSPINFO(urunad, satisYap.Adet.ToString() + " kg.", satisYap.Satisfiyat.ToString("C") + "/kg.", satisYap.Toplamtutar.ToString("C"), "TOTAL :" + yeniFis.toplamtutar.ToString("C"), 0, 0, 0, -1);
-                                    }
-                                    else
-                                    {
-                                        KDbirinciSatiraYaz(urunad, SatilanAdet.ToString() + "St.x" + SatisFiyat.ToString("C") + "/St");
-                                        KDikinciSatiraYaz("TOTAL : " + yeniFis.toplamtutar.ToString("C"));
-                                        //knddsply.VerkaufInfo(urunad + "\n" + satisYap.Adet.ToString() + "St.x" + satisYap.Satisfiyat.ToString("C") + "/St", "TOTAL :" + yeniFis.toplamtutar.ToString("C"));
-                                    }
-                                }
-                                else
-                                {
-                                    if (Program.displayType == "TVS")
-                                    {
-                                        CheckForIllegalCrossThreadCalls = false;
-                                        Thread dssp = new Thread(() => this.DSPINFO(urunad, SatilanAdet + " Stk.", SatisFiyat.ToString("C") + "/Stk.", satisYap.Toplamtutar.ToString("C"), yeniFis.toplamtutar.ToString("C"), 0, 0, 0, 0));
-
-                                        dssp.Start();
-
-                                    }
-                                    else if (counter_waage == 1)
-                                    {
-
-                                        // KDbirinciSatiraYaz(urunad, SatilanAdet.ToString() + "Kg. x" + SatisFiyat.ToString() + "€/Kg");
-                                        //KDikinciSatiraYaz("TOTAL : " + yeniFis.toplamtutar.ToString()+"€");
-                                        KDbirinciSatiraYaz(urunad, "");
-                                        KDikinciSatiraYaz(SatilanAdet.ToString("#0.000") + "kg x " + SatisFiyat.ToString() + ((char)213) + "/kg");
-
-
-                                    }
-                                    else
-                                    {
-                                        KDbirinciSatiraYaz(urunad, SatilanAdet.ToString() + "St.x" + SatisFiyat.ToString() + ((char)213) + "/St");
-                                        KDikinciSatiraYaz("TOTAL : " + yeniFis.toplamtutar.ToString() + ((char)213));
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                if (counter_waage == 1)
-                                {
-                                    if (Program.displayType == "TVS")
-                                    {
-                                        DSPINFO(urunad, satisYap.Adet.ToString() + " kg.", satisYap.Satisfiyat.ToString("C") + "/kg", satisYap.Toplamtutar.ToString("C"), "TOTAL :" + yeniFis.toplamtutar.ToString("C"), 0, 0, 0, 0);
-                                    }
-                                    else
-                                    {
-                                        KDbirinciSatiraYaz(urunad, "");
-                                        KDikinciSatiraYaz(SatilanAdet.ToString("#0.000") + "kg x " + SatisFiyat.ToString() + ((char)213) + "/kg");
-                                    }
-                                }
-                                else if (Program.displayType == "TVS")
-                                {
-                                    CheckForIllegalCrossThreadCalls = false;
-                                    Thread dssp = new Thread(() => this.DSPINFO(urunad, satisYap.Adet.ToString() + " Stk.", satisYap.Satisfiyat.ToString("C") + "/Stk.", satisYap.Toplamtutar.ToString("C"), "TOTAL :" + yeniFis.toplamtutar.ToString("C"), 0, 0, 0, 0));
-
-                                    dssp.Start();
-                                    // knddsply.VerkaufInfo(urunad + "\n" + satisYap.Adet.ToString() + "St.x" + satisYap.Satisfiyat.ToString("C")  + "/St", "TOTAL :" + yeniFis.toplamtutar.ToString("C") );
-                                }
-                                else if (serialPortKD2.IsOpen == true)
-                                {
-
-
-                                    KDbirinciSatiraYaz(urunad, SatilanAdet.ToString() + "x" + SatisFiyat.ToString("#0.00"));
-                                    KDikinciSatiraYaz("TOTAL : " + yeniFis.toplamtutar.ToString("#0.00"));
-                                    // knddsply.VerkaufInfo(urunad + "\n" + SatilanAdet.ToString() + "St.x" + SatisFiyat.ToString("C") + "/St", "TOTAL :" + yeniFis.toplamtutar.ToString("C"));
-                                }
-                            }
-                            //knddsply.VerkaufInfo(urunad + "\n" + SatilanAdet.ToString() + "St.x" + SatisFiyat.ToString("C") + "/St" + (satisYap.Adet>1?"\n" +"Summe: "+ satisYap.Toplamtutar.ToString():"") ,"TOTAL :" + yeniFis.toplamtutar.ToString("C"));
-                            SatilanAdet = 0;
-                            SatisFiyat = 0;
-                            counter_waage = 0;
-                           
-                            Console.Beep(800, 100);
-                            Console.Beep(1500, 100);
-                            frmobstGemuseStuck.Dispose();
-                            return;
-                        }
-                        else
-                        {
-                            F_GenericError frmerror = new F_GenericError();
-                            frmerror.lblMesaj.Text = Program.lang["21"];
-                            frmerror.ShowDialog();
-                        }
-                        // txtGiris.Text = SatilanAdet + "x" + SatisFiyat;
-                        //karmiktari = SatilanAdet * karmiktari;
-                        frmobstGemuseStuck.Dispose();
-                        */
                         Console.Beep(800, 100);
                         Console.Beep(1500, 100);
                         return;
@@ -2245,470 +1894,7 @@ namespace IS_KASSE
 
 
                     }
-
-                    iss_Artikel.Artikel arananArtikel = new iss_Artikel.Artikel();
-                    arananArtikel.ArtikelBul(satilanBarkod);
-                    if (arananArtikel.urunvarmi == true)
-                    {
-                        if (arananArtikel.VkPreis <= 0)
-                        {
-                            F_GenericError frmerror = new F_GenericError();
-                            frmerror.lblMesaj.Text = "DER ARTIKELPREIS IST 0 (NULL)!";
-                            Console.Beep(1000, 1000);
-                            frmerror.ShowDialog();
-
-                            return;
-                        }
-
-                        int grupNo = arananArtikel.Grubid;
-                        Artikel_Grup.ArtikelGrup grupBul = new Artikel_Grup.ArtikelGrup(grupNo);
-                        SatisFiyat = arananArtikel.VkPreis;
-                        urunad = arananArtikel.ArtikelAd;
-                        artikelid = arananArtikel.ArtikelId;
-                        if (grupBul.GrupTur == 2 || grupBul.GrupTur == 1) //Satıs
-                        {
-                            /*
-                            if (txtGiris.Text.IndexOf('X') == -1)
-                            {
-                                PLUSatilanAdet = 1;
-                                satilanBarkod = txtGiris.Text;
-                            }
-                            else
-                            {
-                                int Xyer = txtGiris.Text.IndexOf('X');
-                                if (double.TryParse(txtGiris.Text.Substring(Xyer + 1, txtGiris.Text.Length - (Xyer + 1)), out PLUSatilanAdet))
-                                {
-                                    satilanBarkod = PLUSatilanAdet.ToString();
-                                    PLUSatilanAdet = adet;
-                                }
-                            }
-
-
-
-                            Tarih tarih = new Tarih();
-                            satisYap = new SatisYap();
-                            satisYap.Adet = PLUSatilanAdet;
-                            //satisYap.Fisno = yeniFis.SatisAnaId;
-                            satisYap.KasaNo = Program.kasano;
-                            satisYap.Mwst = arananArtikel.Mwst;
-                            satisYap.Ustid_id = satisYap.Mwst == 7 ? ((int)UstIdEnum.mwst7) : (satisYap.Mwst == 19 ? (int)UstIdEnum.mwst19 : (int)UstIdEnum.mwst0);
-                            satisYap.Ustid_id = arananArtikel.Mwst == 7 ? ((int)UstIdEnum.mwst7) : (arananArtikel.Mwst == 19 ? (int)UstIdEnum.mwst19 : (int)UstIdEnum.mwst0);
-                            satisYap.Gruptur = arananArtikel.Gruptur;
-                            if (arananArtikel.AngebotVarmi != 0)
-                            {
-                                if (arananArtikel.AngebotBaslamaTarihi <= tarih.unixdate(DateTime.Now) && arananArtikel.AngebotBitistarihi >= tarih.unixdate(DateTime.Now))
-                                {
-                                    satisYap.Satisfiyat = arananArtikel.AngebotFiyati;
-                                    satisYap.Angebotvarmi = 1;
-                                    angebotSembol = "*";
-                                }
-                                else
-                                {
-                                    satisYap.Satisfiyat = arananArtikel.VkPreis;
-                                    angebotSembol = "";
-                                }
-                            }
-                            else
-                            {
-                                /*satisYap.Satisfiyat = arananArtikel.VkPreis;
-                                 if (grupBul.Rabatpunkte != 1)
-                                 {
-                                     satisYap.Angebotvarmi = 1;
-                                     angebotSembol = "*";
-                                 }*9/
-                                if (arananArtikel.VkPreis2 > 0)
-                                {
-                                    F_Preisauswahl preislist = new F_Preisauswahl();
-                                    preislist.Preis1 = arananArtikel.VkPreis;
-                                    preislist.Preis2 = arananArtikel.VkPreis2;
-                                    preislist.Preis3 = arananArtikel.VkPreis3;
-                                    preislist.ArtikelName = arananArtikel.ArtikelAd;
-                                    preislist.ShowDialog();
-                                    satisYap.Satisfiyat = preislist.seilenPreis;
-
-                                }
-                                else
-                                {
-                                    satisYap.Satisfiyat = arananArtikel.VkPreis;
-                                }
-                                if (grupBul.Rabatpunkte != 1)
-                                {
-                                    satisYap.Angebotvarmi = 1;
-                                    angebotSembol = "*";
-                                }
-
-                            }
-
-                            satisYap.Tarih = tarih.unixdate(DateTime.Now);
-                            satisYap.Toplamtutar = Math.Round(satisYap.Satisfiyat * adet, 2);
-                            if (satisYap.Toplamtutar >= 50)
-                            {
-
-                                F_GrossSummeBesteatigung frmSumme = new F_GrossSummeBesteatigung();
-                                frmSumme.summe = satisYap.Toplamtutar;
-                                frmSumme.ShowDialog();
-                                if (frmSumme.bestatigung != 1)
-                                {
-                                    satisYap = null;
-                                    return;
-                                }
-
-                            }
-
-                            satisYap.UrunId = arananArtikel.ArtikelId;
-                            satisYap.UrunAd = angebotSembol + arananArtikel.ArtikelAd.Replace("'", "");
-                            satisYap.Birimkar = (satisYap.Satisfiyat - arananArtikel.EkPreis) * adet;
-                            satisYap.Grubid = arananArtikel.Grubid;
-                            satisYap.Fand = arananArtikel.Fand;
-                            satisYap.Fand2 = arananArtikel.Fand2;
-                            satisYap.Birimid = 1;
-                            satisYap.Barkod = arananArtikel.BarkodNo;
-                            //
-                            if (Program.IsletmeAyarlar["markt"] == "2")
-                            {
-
-                                F_FeinKostBedinerAuswahl FUserAuswahl = new F_FeinKostBedinerAuswahl();
-                                FUserAuswahl.satilanPozition = satisYap;
-                                FUserAuswahl.UserList = UserList;
-                                FUserAuswahl.ShowDialog();
-                                if (FUserAuswahl.SecilenUser != -1)
-                                {
-                                    FisOlustur ElemanFisi = verkauferList[FUserAuswahl.SecilenUser];
-                                    toolStripStatusLabel1.Text = Program.lang["13"] + " :" + verkauferList[FUserAuswahl.SecilenUser];
-                                    yeniFis = null;
-                                    if (ElemanFisi == null)
-                                    {
-                                        FisOlustur yeniFis1 = new FisOlustur();
-                                        yeniFis = YeniVerkauferFisiOlustur(ref yeniFis1, FUserAuswahl.SecilenUser);
-                                        yeniFis.kasiyerno = Convert.ToInt16(FUserAuswahl.SecilenUser);
-                                        toolStripStatusLabel1.Text = Program.lang["13"] + " :" + yeniFis.kasiyerno;
-                                        KundenDisplay();
-                                        satisYap.Fisno = yeniFis.SatisAnaId;
-                                    }
-                                    else
-                                    {
-                                        FisOlustur yeniFis1 = new FisOlustur();
-                                        yeniFis = YeniVerkauferFisiOlustur(ref yeniFis1, FUserAuswahl.SecilenUser);
-                                        yeniFis = ElemanFisi;
-                                        toolStripStatusLabel1.Text = Program.lang["13"] + " :" + verkauferList[FUserAuswahl.SecilenUser].kasiyerno;
-                                        satisYap.Fisno = yeniFis.SatisAnaId;
-                                        listView1.Items.Clear();
-                                        KundenDisplay();
-                                        int num2 = 1;
-                                        int count = listView1.Items.Count;
-                                        foreach (SatisYap satisYapEski in yeniFis.SatisKalem)
-                                        {
-
-                                            listView1.Items.Add(num2.ToString());
-                                            listView1.Items[count].SubItems.Add(satisYapEski.UrunAd.ToString() + "(" + (satisYapEski.Gruptur != 3 ? satisYapEski.Adet.ToString() + " Stk." : satisYapEski.Adet.ToString() + "kg.") + "x" + (satisYapEski.Gruptur != 3 ? satisYapEski.Satisfiyat.ToString("C") + "/Stk." : satisYapEski.Satisfiyat.ToString("C") + "/kg.") + ")");
-                                            listView1.Items[count].SubItems.Add(satisYapEski.Toplamtutar.ToString("C"));
-                                            KDikinciSatiraYaz("TOTAL : " + yeniFis.toplamtutar.ToString());
-                                            DSPINFO(satisYapEski.UrunAd, satisYapEski.Gruptur != 3 ? satisYapEski.Adet.ToString() + " Stk." : satisYapEski.Adet.ToString() + "kg.", satisYapEski.Gruptur != 3 ? satisYapEski.Satisfiyat.ToString("C") + "/Stk." : satisYapEski.Satisfiyat.ToString("C") + "/kg.", satisYapEski.Toplamtutar.ToString("C"), "TOTAL :" + yeniFis.toplamtutar.ToString("C"), 0, 0, 0, 0);
-                                            ++num2;
-                                            count++;
-                                        }
-                                        position = num2;
-                                        yeniFis.FisiKapat();
-
-
-                                    }
-                                    yeniFis.SatisKalem.Add(satisYap);
-
-                                    verkauferList[Program.bedID] = yeniFis;
-                                }
-                                else
-                                {
-                                    return;
-                                }
-                            }
-                            else
-                            {
-                                satisYap.Fisno = yeniFis.SatisAnaId;
-                                yeniFis.SatisKalem.Add(satisYap);
-                                LastPos = satisYap;
-                            }
-
-                            //
-                            int listViewElaman = listView1.Items.Count;
-                            listView1.Items.Add(position.ToString());
-                            listView1.Items[listViewElaman].SubItems.Add(angebotSembol + arananArtikel.ArtikelAd.ToString() + "(" + PLUSatilanAdet + "x" + satisYap.Satisfiyat.ToString("C") + ")");
-                            listView1.Items[listViewElaman].SubItems.Add(satisYap.Toplamtutar.ToString("C"));
-                            //listView1.SelectedItems[listView1.Items.Count - 1].Focused = true;
-                            if (listView1.Items.Count > 0)
-                            {
-                                listView1.Items[listView1.Items.Count - 1].EnsureVisible();
-                            }
-                            txtGiris.Text = "";
-                            yeniFis.FisiKapat();
-                            txtToplam.Text = "TOTAL : " + yeniFis.toplamtutar.ToString("C");
-                            position++;
-                            if (arananArtikel.Fand != 0)
-                            {
-                                ///////////////
-                                Artikel furun = new Artikel();
-                                furun.ArtikelBul(arananArtikel.Fand.ToString());
-                                if (furun.urunvarmi == true)
-                                {
-                                    satisYap = new SatisYap();
-                                    satisYap.Adet = PLUSatilanAdet;
-                                    satisYap.Fisno = yeniFis.SatisAnaId;
-                                    satisYap.Barkod = furun.BarkodNo;
-                                    satisYap.KasaNo = Program.kasano;
-                                    satisYap.Mwst = furun.Mwst;
-                                    satisYap.Ustid_id = satisYap.Mwst == 7 ? ((int)UstIdEnum.mwst7) : (satisYap.Mwst == 19 ? (int)UstIdEnum.mwst19 : (int)UstIdEnum.mwst0);
-                                    satisYap.Ustid_id = arananArtikel.Mwst == 7 ? ((int)UstIdEnum.mwst7) : (arananArtikel.Mwst == 19 ? (int)UstIdEnum.mwst19 : (int)UstIdEnum.mwst0);
-                                    satisYap.Satisfiyat = furun.VkPreis;
-                                    satisYap.Tarih = tarih.unixdate(DateTime.Now);
-                                    satisYap.Toplamtutar = Math.Round(furun.VkPreis * PLUSatilanAdet, 2);
-                                    satisYap.UrunId = furun.ArtikelId;
-                                    satisYap.UrunAd = furun.ArtikelAd;
-                                    satisYap.Birimkar = (furun.VkPreis - furun.EkPreis) * PLUSatilanAdet;
-                                    satisYap.Grubid = furun.Grubid;
-                                    satisYap.Gv_typ_id = (int)GVTypEnum.Pfand;
-                                    satisYap.Fand = 1;
-                                    satisYap.Birimid = 1;
-                                    yeniFis.SatisKalem.Add(satisYap);
-                                    listViewElaman = listView1.Items.Count;
-                                    listView1.Items.Add("");
-                                    listView1.Items[listViewElaman].SubItems.Add(furun.ArtikelAd.ToString() + "(" + PLUSatilanAdet + "x" + furun.VkPreis.ToString("C") + ")");
-                                    listView1.Items[listViewElaman].SubItems.Add(satisYap.Toplamtutar.ToString("C"));
-                                    //listView1.SelectedItems[listView1.Items.Count - 1].Focused = true;
-                                    txtGiris.Text = "";
-                                    yeniFis.FisiKapat();
-                                    txtToplam.Text = "TOTAL : " + yeniFis.toplamtutar.ToString("C");
-                                }
-
-                                txtGiris.Text = "";
-                                yeniFis.FisiKapat();
-                                txtToplam.Text = "TOTAL : " + yeniFis.toplamtutar.ToString("C");
-                                position++;
-
-                                pfandid = 0;
-
-
-
-
-                                //////////////////////
-                            }
-                            if (dsp != null)
-                            {
-                                dsp.ClearText();
-                                if (Program.displayType != "IBM")
-                                {
-                                    KDbirinciSatiraYaz(arananArtikel.ArtikelAd.ToString(), PLUSatilanAdet.ToString() + "x" + satisYap.Satisfiyat.ToString("C"));
-                                    KDikinciSatiraYaz("TOTAL : " + yeniFis.toplamtutar.ToString("C"));
-                                }
-                                else
-                                {
-                                    KDbirinciSatiraYaz(arananArtikel.ArtikelAd.ToString(), PLUSatilanAdet.ToString() + "x" + satisYap.Satisfiyat.ToString() + ((char)213));
-                                    KDikinciSatiraYaz("TOTAL : " + yeniFis.toplamtutar.ToString() + ((char)213));
-
-                                }
-                            }
-                            else
-                            {
-                                if (Program.displayType == "TVS")
-                                {
-                                    //knddsply.VerkaufInfo(satisYap.UrunAd + "\n" + satisYap.Adet + "St.x" + satisYap.Satisfiyat.ToString("C") + "/St" + (satisYap.Adet > 1 ? "\n" + satisYap.Toplamtutar.ToString() : ""), "TOTAL :" + yeniFis.toplamtutar.ToString("C"));
-                                    DSPINFO(satisYap.UrunAd, satisYap.Adet + " Stk.", satisYap.Satisfiyat.ToString("C") + "/Stk.", satisYap.Toplamtutar.ToString("C"), "TOTAL :" + yeniFis.toplamtutar.ToString("C"), 0, 0, 0, -1);
-
-                                }
-                                else if (serialPortKD2.IsOpen == true)
-                                {
-
-
-                                    KDbirinciSatiraYaz(arananArtikel.ArtikelAd.ToString(), PLUSatilanAdet.ToString() + "x" + satisYap.Satisfiyat.ToString("#0.00"));
-                                    KDikinciSatiraYaz("TOTAL : " + yeniFis.toplamtutar.ToString("#0.00"));
-                                }
-                            }
-
-                            PLUSatilanAdet = 0;
-                            PLUSatisFiyat = 0;
-                            satilanBarkod = "";*/
-                            gelenBarkod = satilanBarkod;
-                            barkodluUrunEkle();
-                            Console.Beep(800, 100);
-                            Console.Beep(1500, 100);
-                            return;
-                        }
-                        else if (grupBul.GrupTur == 3) //waage
-                        {
-                            ept.ProgramAyarlar = Program.ProgramAyarlar;
-                            ept.WaagePortName = Program.ProgramAyarlar["WPORT"];
-                            //ept.BenimEventim += new etp_extended_main.DisplayDelegate(DSPINFO);
-                            double KundenPreis = 0, NormalPreis = 0;
-                            if (yeniFis.Musterino != 0)
-                            {
-                                if (yeniFis.Musteri.Method == 5)
-                                {
-                                    NormalPreis = arananArtikel.VkPreis;
-                                    KundenPreis = GetSellKundenPreis(yeniFis.Musteri.MusteriGrup, yeniFis.Musterino, arananArtikel.BarkodNo);
-                                    if (KundenPreis != 0)
-                                    {
-
-                                        arananArtikel.VkPreis = KundenPreis;
-                                        angebotSembol = "#";
-                                    }
-                                    else
-                                    {
-                                        angebotSembol += "";
-                                        satisYap.Satisfiyat = arananArtikel.VkPreis;
-                                    }
-                                }
-                            }
-                            satisYap = new SatisYap();
-                            ept_extended.SatisYap_ept WaageResultPos = new SatisYap_ept();
-                            WaageResultPos = ept.WaageMitPLU(arananArtikel);
-                            if (WaageResultPos.errorMeldung == "")
-                            {
-                                satisYap.Adet = WaageResultPos.Adet;
-                                if (yeniFis.Musterino != 0)
-                                {
-                                    if (yeniFis.Musteri.Method == 5)
-                                    {
-                                        satisYap.ProzisyonRabatBetrag = (NormalPreis - KundenPreis) * satisYap.Adet;
-                                    }
-                                }
-                                //satisYap.Fisno = yeniFis.SatisAnaId;
-                                satisYap.KasaNo = Program.kasano;
-                                satisYap.Mwst = WaageResultPos.Mwst;
-                                satisYap.Ustid_id = satisYap.Mwst == Program.MwStList[1] ? ((int)UstIdEnum.mwst7) : (satisYap.Mwst == Program.MwStList[2] ? (int)UstIdEnum.mwst19 : (int)UstIdEnum.mwst0);
-                                satisYap.Gruptur = WaageResultPos.Gruptur;
-                                satisYap.Alisfiyat = WaageResultPos.Alisfiyat;
-                                satisYap.Satisfiyat = WaageResultPos.Satisfiyat;
-                                satisYap.Gv_typ_id = WaageResultPos.Gv_typ_id;
-                                satisYap.Tarih = WaageResultPos.Tarih;
-                                satisYap.Einheit = WaageResultPos.Einheit;
-                                satisYap.Toplamtutar = Math.Round(WaageResultPos.Toplamtutar, 2);
-                                satisYap.Angebotvarmi = WaageResultPos.Angebotvarmi;
-
-                                if (satisYap.Toplamtutar >= 50)
-                                {
-
-                                    F_GrossSummeBesteatigung frmSumme = new F_GrossSummeBesteatigung();
-                                    frmSumme.summe = satisYap.Toplamtutar;
-                                    frmSumme.ShowDialog();
-                                    if (frmSumme.bestatigung != 1)
-                                    {
-                                        satisYap = null;
-                                        return;
-                                    }
-
-                                }
-
-                                satisYap.UrunId = WaageResultPos.UrunId;
-                                satisYap.UrunAd = angebotSembol + WaageResultPos.UrunAd.Replace("'", "");
-                                satisYap.Birimkar = (WaageResultPos.Birimkar) * adet;
-                                satisYap.Grubid = WaageResultPos.Grubid;
-                                satisYap.Fand = WaageResultPos.Fand;
-                                satisYap.Birimid = WaageResultPos.Birimid;
-                                satisYap.Barkod = WaageResultPos.Barkod;
-                                satisYap.KasaNo = Program.kasano;
-                                satisYap.KasiyerId = Program.bedID;
-                                if (Program.IsletmeAyarlar["markt"] == "2")
-                                {
-
-                                    F_FeinKostBedinerAuswahl FUserAuswahl = new F_FeinKostBedinerAuswahl();
-                                    FUserAuswahl.satilanPozition = satisYap;
-                                    FUserAuswahl.UserList = UserList;
-                                    FUserAuswahl.ShowDialog();
-                                    if (FUserAuswahl.SecilenUser != -1)
-                                    {
-                                        FisOlustur ElemanFisi = verkauferList[FUserAuswahl.SecilenUser];
-                                        toolStripStatusLabel1.Text = Program.lang["13"] + " :" + verkauferList[FUserAuswahl.SecilenUser];
-                                        yeniFis = null;
-                                        if (ElemanFisi == null)
-                                        {
-                                            FisOlustur yeniFis1 = new FisOlustur();
-                                            yeniFis = YeniVerkauferFisiOlustur(ref yeniFis1, FUserAuswahl.SecilenUser);
-                                            yeniFis.kasiyerno = Convert.ToInt16(FUserAuswahl.SecilenUser);
-                                            toolStripStatusLabel1.Text = Program.lang["13"] + " :" + yeniFis.kasiyerno;
-                                            KundenDisplay();
-                                            satisYap.Fisno = yeniFis.SatisAnaId;
-                                        }
-                                        else
-                                        {
-                                            FisOlustur yeniFis1 = new FisOlustur();
-                                            yeniFis = YeniVerkauferFisiOlustur(ref yeniFis1, FUserAuswahl.SecilenUser);
-                                            yeniFis = ElemanFisi;
-                                            toolStripStatusLabel1.Text = Program.lang["13"] + " :" + verkauferList[FUserAuswahl.SecilenUser].kasiyerno;
-                                            satisYap.Fisno = yeniFis.SatisAnaId;
-                                            listView1.Items.Clear();
-                                            KundenDisplay();
-                                            int num2 = 1;
-                                            int count = listView1.Items.Count;
-                                            foreach (SatisYap satisYapEski in yeniFis.SatisKalem)
-                                            {
-
-                                                listView1.Items.Add(num2.ToString());
-                                                listView1.Items[count].SubItems.Add(satisYapEski.UrunAd.ToString() + "(" + (satisYapEski.Gruptur != 3 ? satisYapEski.Adet.ToString() + " Stk." : satisYapEski.Adet.ToString() + "kg.") + "x" + (satisYapEski.Gruptur != 3 ? satisYapEski.Satisfiyat.ToString("C") + "/Stk." : satisYapEski.Satisfiyat.ToString("C") + "/kg.") + ")");
-                                                listView1.Items[count].SubItems.Add(satisYapEski.Toplamtutar.ToString("C"));
-                                                KDikinciSatiraYaz("TOTAL : " + yeniFis.toplamtutar.ToString());
-                                                DSPINFO(satisYapEski.UrunAd, satisYapEski.Gruptur != 3 ? satisYapEski.Adet.ToString() + " Stk." : satisYapEski.Adet.ToString() + "kg.", satisYapEski.Gruptur != 3 ? satisYapEski.Satisfiyat.ToString("C") + "/Stk." : satisYapEski.Satisfiyat.ToString("C") + "/kg.", satisYapEski.Toplamtutar.ToString("C"), "TOTAL :" + yeniFis.toplamtutar.ToString("C"), 0, 0, 0, 0);
-                                                ++num2;
-                                                count++;
-                                            }
-                                            position = num2;
-                                            yeniFis.FisiKapat();
-
-
-
-                                        }
-                                        yeniFis.SatisKalem.Add(satisYap);
-                                        verkauferList[Program.bedID] = yeniFis;
-                                    }
-                                    else
-                                    {
-                                        return;
-                                    }
-                                }
-                                else
-                                {
-                                    satisYap.Fisno = yeniFis.SatisAnaId;
-                                    yeniFis.SatisKalem.Add(satisYap);
-                                    LastPos = satisYap;
-                                }
-                                //yeniFis.SatisKalem.Add(satisYap);
-                                int count1 = listView1.Items.Count;
-                                listView1.Items.Add(position.ToString());
-                                listView1.Items[count1].SubItems.Add(satisYap.UrunAd.ToString() + "(" + (object)satisYap.Adet.ToString("#0.000") + " kg. x " + satisYap.Satisfiyat.ToString("C") + "/kg.)");
-                                listView1.Items[count1].SubItems.Add(satisYap.Toplamtutar.ToString("C"));
-                                listView1.Items[count1].Tag = satisYap.Barkod;
-                                if (listView1.Items.Count > 0)
-                                    listView1.Items[listView1.Items.Count - 1].EnsureVisible();
-                                txtGiris.Text = "";
-                                yeniFis.FisiKapat();
-                                txtToplam.Text = "TOTAL : " + yeniFis.toplamtutar.ToString("C");
-                                ++position;
-                                angebotSembol = "";
-                                DSPINFO(satisYap.UrunAd, satisYap.Adet.ToString("#0.000") + " kg.", satisYap.Satisfiyat.ToString("C") + "/kg.", satisYap.Toplamtutar.ToString("C"), "TOTAL :" + yeniFis.toplamtutar.ToString("C"), 0, 0, 0, 0);
-                                satisYap = null;
-                                Console.Beep(800, 100);
-                                Console.Beep(1000, 100);
-                                return;
-                            }
-                            else
-                            {
-
-                                F_GenericError frmerror = new F_GenericError();
-                                frmerror.lblMesaj.Text = WaageResultPos.errorMeldung;
-                                Console.Beep(1000, 1000);
-                                frmerror.ShowDialog();
-
-                                return;
-                            }
-
-
-                        }
-
-
-                    }
-                    else
-                    {
-                        UrunYok();
-                        return;
-                    }
-
+                    ObstGemusePLU(satilanBarkod);
                 }
 
             }
@@ -3559,19 +2745,39 @@ namespace IS_KASSE
 
 
         }
-<<<<<<< Updated upstream
-
-=======
         public void ObstGemusePLU(string brkdOG)
         {
-
+            Bitmap snap = null;
+            if ((Program.ProgramAyarlar["Cam1"] != "") && (Program.ProgramAyarlar["Cam1"] != null))
+            {
+                lock (_frameLock)
+                {
+                    if (_lastFrame != null)
+                        snap = (Bitmap)_lastFrame.Clone();
+                }
+            }
 
 
             iss_Artikel.Artikel arananArtikel = new iss_Artikel.Artikel();
             arananArtikel.ArtikelBul(brkdOG);
             if (arananArtikel.urunvarmi == true)
             {
+                if (snap != null)
+                {
+                    try
+                    {
+                        string path = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "AI\\image\\" + tarih.unixdate(DateTime.Now) + ".jpg");
+                        snap.Save(path, System.Drawing.Imaging.ImageFormat.Jpeg);
+                        CheckForIllegalCrossThreadCalls = false;
+                        Thread ObstGemStkAI = new Thread(() => this.GenericRegisterImage(path, gelenBarkod));
+                        ObstGemStkAI.Start();
 
+                    }
+                    finally
+                    {
+                        snap.Dispose();
+                    }
+                }
                 if (arananArtikel.VkPreis <= 0)
                 {
                     F_GenericError frmerror = new F_GenericError();
@@ -3669,8 +2875,6 @@ namespace IS_KASSE
                         satisYap.Barkod = WaageResultPos.Barkod;
                         satisYap.KasaNo = Program.kasano;
                         satisYap.KasiyerId = Program.bedID;
-                        satisYap.pathForAI = pathForAI;
-                        satisYap.AIScare = AIScore;
                         if (Program.IsletmeAyarlar["markt"] == "2")
                         {
 
@@ -3779,37 +2983,10 @@ namespace IS_KASSE
         }
         public void GenericRegisterImage(string path, string Name)
         {
-
-            AILIB.register_image(path, 0, Name);
-            AIRegImageCOunt++;
-
-            if (AIRegImageCOunt == 5)
-            {
-                AILIB.savingModel();
-            }
-            if (myConn.State == ConnectionState.Closed)
-            {
-                myConn.Open();
-            }
-            try
-            {
-                string AISQL = "INSERT INTO `aiimagelog`( `path`, `score`, `level`, `bonnr`,barcode) VALUES(@path, @score, @level, @bonnr, @barcode)";
-                MySqlCommand cmdAIIns = new MySqlCommand();
-                cmdAIIns.Parameters.AddWithValue("@path", path);
-                cmdAIIns.Parameters.AddWithValue("@score", 0);
-                cmdAIIns.Parameters.AddWithValue("@level", 1); //1 :Ögrenem 2:Tahmin
-                cmdAIIns.Parameters.AddWithValue("@bonnr", 0);
-                cmdAIIns.Parameters.AddWithValue("@barcode", Name);
-                cmdAIIns.CommandText = AISQL;
-                cmdAIIns.Connection = myConn;
-                cmdAIIns.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-            }
+            iss_smart_AI iss_Smart_AI = new iss_smart_AI();
+            iss_Smart_AI.register_image(path, 0, Name);
 
         }
->>>>>>> Stashed changes
         private void DSPENDE(string mesaj)
         {
             Application.DoEvents();
@@ -5919,7 +5096,7 @@ namespace IS_KASSE
                                     musteri.Sorumlu = "";
                                     musteri.Stad = Program.IsletmeAyarlar["stadt"];
                                     musteri.Stnr = "";
-                                   // musteri.db = (new db()).myconn();
+                                    // musteri.db = (new db()).myconn();
                                     if (musteri.Kaydet() == true)
                                     {
                                         getMusteriNo(KundenBarcode);
@@ -6474,7 +5651,7 @@ namespace IS_KASSE
 
                                 if (connection.State == ConnectionState.Closed)
                                     connection.Open();
-                                string BizSQL = "SELECT  biz_umsatz_pos.*, ABEZ,EK, EAN1, biz_umsatz_kopf.gelesen, sysWGNR FROM biz_umsatz_pos LEFT JOIN `biz_artikel` ON PLNR=artnr INNER JOIN biz_umsatz_kopf ON biz_umsatz_kopf.id=biz_umsatz_pos.kopf_id WHERE biz_umsatz_pos.bonnr=" + BizerbaBonNr + " AND `gelesen`=0 ORDER by kopf_id DESC";
+                                string BizSQL = "SELECT  biz_umsatz_pos.*, ABEZ,EK, EAN1, biz_umsatz_kopf.gelesen, sysWGNR FROM biz_umsatz_pos LEFT JOIN `biz_artikel` ON PLNR=artnr INNER JOIN biz_umsatz_kopf ON biz_umsatz_kopf.id=biz_umsatz_pos.kopf_id WHERE biz_umsatz_pos.bonnr=" + BizerbaBonNr + " ORDER by kopf_id DESC";
                                 MySqlDataAdapter myDaBiz = new MySqlDataAdapter(BizSQL, connection);
                                 DataTable dtBiz = new DataTable();
                                 myDaBiz.Fill(dtBiz);
@@ -9152,8 +8329,8 @@ namespace IS_KASSE
                                     satisYap = new SatisYap();
                                     satisYap.staffelOK = 1;
                                     satisYap.Adet = bolum;
-                                    satisYap.pathForAI = pathForAI;
-                                    satisYap.AIScare = AIScore;
+                                    //satisYap.Fisno = yeniFis.SatisAnaId;
+
                                     satisYap.KasaNo = Program.kasano;
                                     satisYap.Mwst = artikel1.Mwst;
                                     satisYap.Ustid_id = satisYap.Mwst == Program.MwStList[1] ? ((int)UstIdEnum.mwst7) : (satisYap.Mwst == Program.MwStList[2] ? (int)UstIdEnum.mwst19 : (int)UstIdEnum.mwst0);
@@ -9433,8 +8610,6 @@ namespace IS_KASSE
                         satisYap.Mwst = artikel1.Mwst;
                         satisYap.Ustid_id = satisYap.Mwst == Program.MwStList[1] ? ((int)UstIdEnum.mwst7) : (satisYap.Mwst == Program.MwStList[2] ? (int)UstIdEnum.mwst19 : (int)UstIdEnum.mwst0);
                         satisYap.Barkod = artikel1.BarkodNo;
-                        satisYap.pathForAI = pathForAI;
-                        satisYap.AIScare = AIScore;
                         if (artikel1.AngebotVarmi != 0)
                         {
                             if (artikel1.Punkterabatdurum != 1)
@@ -10359,48 +9534,30 @@ namespace IS_KASSE
                             }
                             if (yeniFis.SatisKalem[seciliItem].Fand != 0 || yeniFis.SatisKalem[seciliItem].Fand2 != 0)
                             {
-                               
-                                    if (scaleid == 0)
-                                    {
-                                        AddSofortStorno(yeniFis.SatisKalem[seciliItem].UrunAd, yeniFis.SatisKalem[seciliItem].UrunId, yeniFis.SatisKalem[seciliItem].Barkod, yeniFis.SatisKalem[seciliItem].Satisfiyat, yeniFis.SatisKalem[seciliItem].Toplamtutar, yeniFis.SatisKalem[seciliItem].Adet, yeniFis.SatisKalem[seciliItem].Grubid, "", "", "", "", "");
+                                if (scaleid == 0)
+                                {
+                                    AddSofortStorno(yeniFis.SatisKalem[seciliItem].UrunAd, yeniFis.SatisKalem[seciliItem].UrunId, yeniFis.SatisKalem[seciliItem].Barkod, yeniFis.SatisKalem[seciliItem].Satisfiyat, yeniFis.SatisKalem[seciliItem].Toplamtutar, yeniFis.SatisKalem[seciliItem].Adet, yeniFis.SatisKalem[seciliItem].Grubid, "", "", "", "", "");
 
-                                    }
-                                    yeniFis.SatisKalem.RemoveAt(seciliItem + 1);
-                                    yeniFis.SatisKalem.RemoveAt(seciliItem);
-                                
-                            }                            
+                                }
+                                yeniFis.SatisKalem.RemoveAt(seciliItem + 1);
+                                yeniFis.SatisKalem.RemoveAt(seciliItem);
+                            }
+                            /*if (yeniFis.SatisKalem[seciliItem].Grubid == 43)
+                            {
+                                F_GenericError fGenericError = new F_GenericError();
+                                fGenericError.lblMesaj.Text = "Sie Dürfen nicht Rabatt-Coupon löschen, da es schon entwertet worden! Bitte versuchen Sie komplette Bon  ";
+                                fGenericError.lblMesaj.Font = new Font("Tahoma", 11f);
+                                fGenericError.lblMesaj.Text += Program.lang["8"];
+                                int num = (int)fGenericError.ShowDialog();
+                                seciliItem = -1;
+                            }*/
                             else
                             {
-                                if (yeniFis.SatisKalem[seciliItem].Grubid != 1 && Program.ProgramAyarlar["AILibImage"] != "" && Program.ProgramAyarlar["AILibImage"] != null)
+                                if (scaleid == 0)
                                 {
-                                    F_AI_PosDel AidelForm = new F_AI_PosDel();
-                                    AidelForm.ShowDialog();
-                                    if (AidelForm.Antwort == 1)//KI feler
-                                    {
-                                        AILIB.deleteItem(yeniFis.SatisKalem[seciliItem].Barkod);
-                                        if (scaleid == 0)
-                                        {
-                                            AddSofortStorno(yeniFis.SatisKalem[seciliItem].UrunAd, yeniFis.SatisKalem[seciliItem].UrunId, yeniFis.SatisKalem[seciliItem].Barkod, yeniFis.SatisKalem[seciliItem].Satisfiyat, yeniFis.SatisKalem[seciliItem].Toplamtutar, yeniFis.SatisKalem[seciliItem].Adet, yeniFis.SatisKalem[seciliItem].Grubid, "", "", "", "", "");
-                                        }
-                                        yeniFis.SatisKalem.RemoveAt(seciliItem);
-                                    }
-                                    else
-                                    {
-                                        if (scaleid == 0)
-                                        {
-                                            AddSofortStorno(yeniFis.SatisKalem[seciliItem].UrunAd, yeniFis.SatisKalem[seciliItem].UrunId, yeniFis.SatisKalem[seciliItem].Barkod, yeniFis.SatisKalem[seciliItem].Satisfiyat, yeniFis.SatisKalem[seciliItem].Toplamtutar, yeniFis.SatisKalem[seciliItem].Adet, yeniFis.SatisKalem[seciliItem].Grubid, "", "", "", "", "");
-                                        }
-                                        yeniFis.SatisKalem.RemoveAt(seciliItem);
-                                    }
+                                    AddSofortStorno(yeniFis.SatisKalem[seciliItem].UrunAd, yeniFis.SatisKalem[seciliItem].UrunId, yeniFis.SatisKalem[seciliItem].Barkod, yeniFis.SatisKalem[seciliItem].Satisfiyat, yeniFis.SatisKalem[seciliItem].Toplamtutar, yeniFis.SatisKalem[seciliItem].Adet, yeniFis.SatisKalem[seciliItem].Grubid, "", "", "", "", "");
                                 }
-                                else
-                                {
-                                    if (scaleid == 0)
-                                    {
-                                        AddSofortStorno(yeniFis.SatisKalem[seciliItem].UrunAd, yeniFis.SatisKalem[seciliItem].UrunId, yeniFis.SatisKalem[seciliItem].Barkod, yeniFis.SatisKalem[seciliItem].Satisfiyat, yeniFis.SatisKalem[seciliItem].Toplamtutar, yeniFis.SatisKalem[seciliItem].Adet, yeniFis.SatisKalem[seciliItem].Grubid, "", "", "", "", "");
-                                    }
-                                    yeniFis.SatisKalem.RemoveAt(seciliItem);
-                                }
+                                yeniFis.SatisKalem.RemoveAt(seciliItem);
                             }
                             int num = 1;
                             listView1.Items.Clear();
@@ -12150,7 +11307,7 @@ namespace IS_KASSE
                     {
                         Artikel artikel = new Artikel();
                         artikel.ArtikelBulGewicht(dataTable.Rows[0].ItemArray[5].ToString());
-                        double num=0;
+                        double num = 0;
                         if (Program.IsletmeAyarlar["kod"] == "383")
                         {
                             num = Math.Round(Convert.ToDouble(gelenBarkod.Substring(7, 3) + "," + gelenBarkod.Substring(10, 2)), 2);
@@ -12168,7 +11325,7 @@ namespace IS_KASSE
                                     {
                                         satisYap.Angebotvarmi = 1;
                                         angebotSembol = "*";
-                                        num=satisYap.Satisfiyat = artikel.VkPreis;
+                                        num = satisYap.Satisfiyat = artikel.VkPreis;
                                     }
                                     if (artikel.AngebotBaslamaTarihi <= (double)tarih.unixdate(DateTime.Now) && artikel.AngebotBitistarihi >= (double)tarih.unixdate(DateTime.Now))
                                     {
@@ -12195,7 +11352,7 @@ namespace IS_KASSE
                                     position = 1;
                                     listView1.Items.Clear();
                                 }
-                                
+
                                 satisYap.Adet = result;
                                 satisYap.Fisno = yeniFis.SatisAnaId;
                                 satisYap.KasaNo = Program.kasano;
@@ -13653,8 +12810,6 @@ namespace IS_KASSE
 
         }
 
-<<<<<<< Updated upstream
-=======
         private void btnAIimage_Click(object sender, EventArgs e)
         {
             if (Program.ProgramAyarlar["AILibImage"] != null)
@@ -13662,37 +12817,13 @@ namespace IS_KASSE
                 if (Program.ProgramAyarlar["AILibImage"] != "")
                 {
                     Bitmap snap = null;
-                    try
+                    if ((Program.ProgramAyarlar["Cam1"] != "") && (Program.ProgramAyarlar["Cam1"] != null))
                     {
-
-                        if ((Program.ProgramAyarlar["Cam1"] != "") && (Program.ProgramAyarlar["Cam1"] != null))
+                        lock (_frameLock)
                         {
-                            string path = "";
-                            lock (_frameLock1)
-                            {
-                                if (_lastFrame1 != null)
-                                    snap = (Bitmap)_lastFrame1.Clone();
-                            }
-                            if (snap == null)
-                                return;
-                            path = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "AI\\image\\" + tarih.unixdate(DateTime.Now) + ".jpg");
-                            snap.Save(path, System.Drawing.Imaging.ImageFormat.Jpeg);
-
-
-
-                            CheckForIllegalCrossThreadCalls = false;
-                            Thread ObstGemStkAIReg = new Thread(() => this.GenericPredict(path));
-                            ObstGemStkAIReg.Start();
-
+                            if (_lastFrame != null)
+                                snap = (Bitmap)_lastFrame.Clone();
                         }
-                    }
-                    catch (Exception dd)
-                    {
-                        MessageBox.Show(dd.Message);
-                    }
-                    finally
-                    {
-                        snap.Dispose();
                     }
 
 
@@ -13701,13 +12832,12 @@ namespace IS_KASSE
         }
         public void GenericPredict(string path)
         {
-
             if (Program.ProgramAyarlar["AILibImage"] == "Rx") //Ronson
             {
-
+                iss_smart_AI iss_Smart_AI = new iss_smart_AI();
                 if (File.Exists(path))
                 {
-                    string Result = AILIB.processing_image_from_path(path);
+                    string Result = iss_Smart_AI.processing_image_from_path(path);
                     JObject obj = JObject.Parse(Result);
 
                     PredictionResult result = new PredictionResult
@@ -13725,49 +12855,28 @@ namespace IS_KASSE
                     {
                         if (result.Predicted_Label != "")
                         {
-                            if (Convert.ToDouble(result.Scores[0].Value.Replace('.', ',')) > 0.75)
+                            if (Convert.ToDouble(result.Scores[0].Value) > 0.75)
                             {
-                                pathForAI = path;
                                 ObstGemusePLU(result.Scores[0].Code);
-                            }
-                            else
-                            {
-                                string INSql = "";
-                                for (int i = 0; i < result.Scores.Count; i++)
-                                {
-                                    if (Convert.ToDouble(result.Scores[i].Value.Replace('.', ',')) >= 0.20)
-                                    {
-                                        INSql += result.Scores[i].Code + ",";
-                                    }
-                                }
-                                F_AI_Predict PredictImageForm = new F_AI_Predict();
-                                PredictImageForm.SQLARtikel = INSql.Substring(0, INSql.Length - 1);
-                                PredictImageForm.result = result;
-                                PredictImageForm.ShowDialog();
-                                if (PredictImageForm.code != "")
-                                {
-                                    var result1 = result.Scores.FirstOrDefault(x => x.Code == PredictImageForm.code);
-                                    AIScore = result is null ? 0 : Convert.ToDouble(result1.Code.ToString().Replace('.', ','));
-                                    GenericRegisterImage(path, result1.Code); // Kaseiyerin secimine göre regsiter et 
-                                    pathForAI = path;
-                                    gelenBarkod = PredictImageForm.code;
-                                    ObstGemusePLU(gelenBarkod);
-                                }
-
                             }
                             //richTextBox1.AppendText(result.Predicted_Label + "(" + result.Scores[0].Value.ToString() + ")\n");
                         }
                         else
                         {
-
-
+                            string INSql = "";
+                            for(int i=0; i<result.Scores.Count;i++)
+                            {
+                                if (Convert.ToDouble(result.Scores[i].Value)>0.40)
+                                {
+                                    insql 
+                                }
+                            }
 
                         }
                     }
                 }
             }
         }
->>>>>>> Stashed changes
         private void kryptonButton47_Click(object sender, EventArgs e)
         {
             PreisCheck = true;
