@@ -9,9 +9,9 @@ using System.Drawing;
 using System.Windows.Forms.Layout;
 using iss_ebon;
 using iss_Ronsson;
-using Mysqlx.Crud;
+//using Mysqlx.Crud;
 using Newtonsoft.Json.Linq;
-using static Mysqlx.Notice.Warning.Types;
+//using static Mysqlx.Notice.Warning.Types;
 using System.IO;
 
 namespace IS_KASSE
