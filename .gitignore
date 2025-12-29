@@ -1,0 +1,36 @@
+# Build results
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio working folders
+.vs/
+.svn/
+
+# Backup & logs
+*.log
+*.bak
+
+# NuGet
+packages/
+*.nupkg
+*.snupkg
+# Eğer packages klasörünü commit etmek istiyorsan aşağıdakini kaldır
+# !packages/build/
+
+# Publish output
+publish/
+PublishProfiles/
+
+# Resharper / Rider
+_ReSharper*/
+*.DotSettings.user
+.idea/
+
+# Autosave
+*~.nide
