@@ -1,0 +1,1515 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A4BBF26E-DE30-40F7-BD1E-465295E3EC5E}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>IS_KASSE</RootNamespace>
+    <AssemblyName>IS KASSE</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Kasse128x128.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <TargetZone>Internet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>false</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>IS_KASSE.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <PlatformTarget>x64</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <PlatformTarget>x64</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ActiveLock3_6Net">
+      <HintPath>..\..\iss_Rea\iss_Rea\bin\Debug\ActiveLock3_6Net.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge, Version=2.2.5.0, Culture=neutral, PublicKeyToken=c1db6ff4eaa06aeb, processorArchitecture=MSIL">
+      <HintPath>packages\AForge.2.2.5\lib\AForge.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge.Video, Version=2.2.5.0, Culture=neutral, PublicKeyToken=cbfb6e07d173c401, processorArchitecture=MSIL">
+      <HintPath>packages\AForge.Video.2.2.5\lib\AForge.Video.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge.Video.DirectShow, Version=2.2.5.0, Culture=neutral, PublicKeyToken=61ea4348d43881b7, processorArchitecture=MSIL">
+      <HintPath>packages\AForge.Video.DirectShow.2.2.5\lib\AForge.Video.DirectShow.dll</HintPath>
+    </Reference>
+    <Reference Include="AS.Video.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\AS.Video.Core.1.0.3\lib\net45\AS.Video.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="AS.Video.Sources.AForge, Version=1.0.9.22248, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\AS.Video.Sources.AForge.1.0.9.1\lib\net45\AS.Video.Sources.AForge.dll</HintPath>
+    </Reference>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.1.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Z-GEREKLI\bccrypto-csharp-1.8.5-bin\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="ComponentFactory.Krypton.Docking, Version=4.3.2.0, Culture=neutral, PublicKeyToken=a87e673e9ecb6e8e" />
+    <Reference Include="ComponentFactory.Krypton.Navigator, Version=4.3.2.0, Culture=neutral, PublicKeyToken=a87e673e9ecb6e8e" />
+    <Reference Include="ComponentFactory.Krypton.Toolkit, Version=4.3.2.0, Culture=neutral, PublicKeyToken=a87e673e9ecb6e8e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Component Factory\Krypton Toolkit 4.3.2\Bin\ComponentFactory.Krypton.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="ComponentFactory.Krypton.Workspace, Version=4.3.2.0, Culture=neutral, PublicKeyToken=a87e673e9ecb6e8e" />
+    <Reference Include="Conn, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\IS KASSE\Conn\Conn\bin\Release\Conn.dll</HintPath>
+    </Reference>
+    <Reference Include="Digi_ISS">
+      <HintPath>..\..\..\..\VS2017\Digi_ISS\Digi_ISS\bin\Debug\Digi_ISS.dll</HintPath>
+    </Reference>
+    <Reference Include="EasyZVTDLL, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d7c1f0a4aaa792eb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Release\EasyZVTDLL.dll</HintPath>
+    </Reference>
+    <Reference Include="ept_extended, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\ept_extended\ept_extended\bin\x86\Release\ept_extended.dll</HintPath>
+    </Reference>
+    <Reference Include="iss_Artikel, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\iss_Artikel\iss_Artikel\bin\Release\iss_Artikel.dll</HintPath>
+    </Reference>
+    <Reference Include="iss_ArtikelGrup">
+      <HintPath>..\..\..\iss_ArtikelGrup\iss_ArtikelGrup\bin\Release\iss_ArtikelGrup.dll</HintPath>
+    </Reference>
+    <Reference Include="iss_Birimler, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\iss_Birimler\iss_Birimler\bin\Release\iss_Birimler.dll</HintPath>
+    </Reference>
+    <Reference Include="iss_BonCreate, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\iss_multiparking\iss_multiparking\bin\Debug\iss_BonCreate.dll</HintPath>
+    </Reference>
+    <Reference Include="iss_CashDro">
+      <HintPath>..\..\..\iss_CashDro\iss_CashDro\bin\Debug\iss_CashDro.dll</HintPath>
+    </Reference>
+    <Reference Include="iss_Crypto">
+      <HintPath>..\..\..\iss_Crypto\iss_Crypto\bin\Release\iss_Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="iss_Datev">
+      <HintPath>..\..\..\..\VS2017\iss_Datev\iss_Datev\bin\Debug\iss_Datev.dll</HintPath>
+    </Reference>
+    <Reference Include="iss_ebon">
+      <HintPath>..\..\..\iss_ebon\iss_ebon\bin\Debug\iss_ebon.dll</HintPath>
+    </Reference>
+    <Reference Include="iss_gdpdu, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\iss_gdpdu\iss_gdpdu\bin\Release\iss_gdpdu.dll</HintPath>
+    </Reference>
+    <Reference Include="iss_Gutschein, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\IS_Gutschein\IS_Gutschein\bin\Release\iss_Gutschein.dll</HintPath>
+    </Reference>
+    <Reference Include="iss_HandyAuflade">
+      <HintPath>..\..\..\iss_HandyAuflade\iss_HandyAuflade\bin\Release\iss_HandyAuflade.dll</HintPath>
+    </Reference>
+    <Reference Include="iss_HandyAuflade_Manegement">
+      <HintPath>..\..\..\..\VS2017\iss_HandyAuflade_Manegement\iss_HandyAuflade_Manegement\bin\Release\iss_HandyAuflade_Manegement.dll</HintPath>
+    </Reference>
+    <Reference Include="iss_HandyAuflade_Manegement_Mopin">
+      <HintPath>..\..\..\..\VS2017\iss_HandyAuflade_Manegement - Kopie\iss_HandyAuflade_Manegement\bin\Release\iss_HandyAuflade_Manegement_Mopin.dll</HintPath>
+    </Reference>
+    <Reference Include="iss_HandyMopin">
+      <HintPath>..\..\..\iss_HandyAuflade_V1\iss_HandyAuflade\bin\Release\iss_HandyMopin.dll</HintPath>
+    </Reference>
+    <Reference Include="iss_KassenZahler">
+      <HintPath>..\..\..\iss_KassenZahler\iss_KassenZahler\bin\Debug\iss_KassenZahler.dll</HintPath>
+    </Reference>
+    <Reference Include="iss_Kunden">
+      <HintPath>..\..\..\iss_Kunden\iss_Kunden\bin\Release\iss_Kunden.dll</HintPath>
+    </Reference>
+    <Reference Include="iss_kundengrup">
+      <HintPath>..\..\..\iss_kundengrup\iss_kundengrup\bin\Debug\iss_kundengrup.dll</HintPath>
+    </Reference>
+    <Reference Include="iss_Logger">
+      <HintPath>..\..\..\iss_Logger\bin\Release\iss_Logger.dll</HintPath>
+    </Reference>
+    <Reference Include="iss_Math">
+      <HintPath>..\..\..\iss_Math\iss_Math\bin\Debug\iss_Math.dll</HintPath>
+    </Reference>
+    <Reference Include="iss_MusteriAdres, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\iss_MusteriAdres\iss_MusteriAdres\bin\Release\iss_MusteriAdres.dll</HintPath>
+    </Reference>
+    <Reference Include="iss_nullbon">
+      <HintPath>..\..\..\iss_nullbon\iss_nullbon\bin\Release\iss_nullbon.dll</HintPath>
+    </Reference>
+    <Reference Include="iss_Rabat">
+      <HintPath>..\..\..\iss_Rabat\iss_Rabat\bin\Debug\iss_Rabat.dll</HintPath>
+    </Reference>
+    <Reference Include="iss_Rea, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\iss_Rea\iss_Rea\bin\Release\iss_Rea.dll</HintPath>
+    </Reference>
+    <Reference Include="iss_ReadIniFile">
+      <HintPath>..\..\..\iss_ReadIniFile\bin\Release\iss_ReadIniFile.dll</HintPath>
+    </Reference>
+    <Reference Include="iss_RechnungPrintClass, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\iss_RechnungPrintClass\iss_RechnungPrintClass\bin\Release\iss_RechnungPrintClass.dll</HintPath>
+    </Reference>
+    <Reference Include="iss_RechnungsCreate">
+      <HintPath>..\..\..\iss_RechnungsCreate\iss_RechnungsCreate\bin\Release\iss_RechnungsCreate.dll</HintPath>
+    </Reference>
+    <Reference Include="iss_Ronsson">
+      <HintPath>..\..\IS KASSE\iss_Ronsson\iss_Ronsson\bin\Release\iss_Ronsson.dll</HintPath>
+    </Reference>
+    <Reference Include="iss_Satiskalem">
+      <HintPath>..\..\..\iss_Satiskalem\iss_Satiskalem\bin\Release\iss_Satiskalem.dll</HintPath>
+    </Reference>
+    <Reference Include="iss_tse_Meldepflicht">
+      <HintPath>..\..\..\iss_tse_Meldepflicht\bin\Release\iss_tse_Meldepflicht.dll</HintPath>
+    </Reference>
+    <Reference Include="iss_tse_v2">
+      <HintPath>..\..\..\iss_tse_v2\iss_tse\bin\Release\iss_tse_v2.dll</HintPath>
+    </Reference>
+    <Reference Include="iss_VA">
+      <HintPath>..\..\..\iss_VA\iss_VA\bin\x86\Release\iss_VA.dll</HintPath>
+    </Reference>
+    <Reference Include="iss_wg, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\iss_wg\ClassLibrary1\bin\Release\iss_wg.dll</HintPath>
+    </Reference>
+    <Reference Include="MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
+      <HintPath>packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="MetroFramework.Design, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
+      <HintPath>packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="MetroFramework.Fonts, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
+      <HintPath>packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.Fonts.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.PointOfService, Version=1.12.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Programme\Microsoft Point Of Service\SDK\Microsoft.PointOfService.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.PointOfService.ControlBase, Version=1.12.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Programme\Microsoft Point Of Service\SDK\Microsoft.PointOfService.ControlBase.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic.PowerPacks.Vs, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.WebView2.Core, Version=255.255.255.255, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\Microsoft.Web.WebView2.1.0.2194-prerelease\lib\net45\Microsoft.Web.WebView2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.WebView2.WinForms, Version=1.0.2045.28, Culture=neutral, PublicKeyToken=2a8ab48044d2601e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\Microsoft.Web.WebView2.1.0.2194-prerelease\lib\net45\Microsoft.Web.WebView2.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.WebView2.Wpf">
+      <HintPath>..\..\..\..\VS2017\iss_Datev\packages\Microsoft.Web.WebView2.1.0.2045.28\lib\net45\Microsoft.Web.WebView2.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data, Version=6.9.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SERVER_AKKAUF\packages\MySql.Data.9.5.0\lib\net462\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="MySqlBackup, Version=2.0.9.2, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Z-GEREKLI\MySqlBackup.NET_v2.3.5_\MySql.Data.DLL\MySqlBackup.dll</HintPath>
+    </Reference>
+    <Reference Include="MysqlSahbaz">
+      <HintPath>..\..\..\..\MysqlSahbaz\MysqlSahbaz\bin\Debug\MysqlSahbaz.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\RC -V2\RC\bin\Release\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="POS.Devices.OPOSCashDrawer, Version=1.13.0.0, Culture=neutral, PublicKeyToken=25db91e28cd23c98, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>C:\WINDOWS\assembly\GAC_MSIL\POS.Devices.OPOSCashDrawer\1.13.0.0__25db91e28cd23c98\POS.Devices.OPOSCashDrawer.dll</HintPath>
+    </Reference>
+    <Reference Include="POS.Devices.OPOSLineDisplay, Version=1.13.0.0, Culture=neutral, PublicKeyToken=25db91e28cd23c98, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>C:\WINDOWS\assembly\GAC_MSIL\POS.Devices.OPOSLineDisplay\1.13.0.0__25db91e28cd23c98\POS.Devices.OPOSLineDisplay.dll</HintPath>
+    </Reference>
+    <Reference Include="POS.Devices.OPOSPOSPrinter, Version=1.13.0.0, Culture=neutral, PublicKeyToken=25db91e28cd23c98, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>C:\WINDOWS\assembly\GAC_MSIL\POS.Devices.OPOSPOSPrinter\1.13.0.0__25db91e28cd23c98\POS.Devices.OPOSPOSPrinter.dll</HintPath>
+    </Reference>
+    <Reference Include="POS.Devices.OPOSScanner, Version=1.13.0.0, Culture=neutral, PublicKeyToken=25db91e28cd23c98, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>C:\Program Files\OPOS\OposFor.NET\POS.Devices.OPOSScanner.dll</HintPath>
+    </Reference>
+    <Reference Include="POS.Devices.Opos_Constants, Version=1.13.0.0, Culture=neutral, PublicKeyToken=25db91e28cd23c98, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>C:\WINDOWS\assembly\GAC_MSIL\POS.Devices.Opos_Constants\1.13.0.0__25db91e28cd23c98\POS.Devices.Opos_Constants.dll</HintPath>
+    </Reference>
+    <Reference Include="RC_V1, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\RC -V2\RC\bin\Release\RC_V1.dll</HintPath>
+    </Reference>
+    <Reference Include="SahbazZVT">
+      <HintPath>..\..\SahbazZVT\SahbazZVT\bin\Debug\SahbazZVT.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Runtime.CompilerServices.Unsafe.6.1.2\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Tarih">
+      <HintPath>..\..\..\Tarih\Tarih\bin\Release\Tarih.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Angebot.cs" />
+    <Compile Include="Artikel.cs" />
+    <Compile Include="ArtikelGrup.cs" />
+    <Compile Include="Ayar.cs" />
+    <Compile Include="Birimler.cs" />
+    <Compile Include="BonTypeEnum.cs" />
+    <Compile Include="Casio.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Casio.Designer.cs">
+      <DependentUpon>Casio.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Class1.cs" />
+    <Compile Include="CRC16.cs" />
+    <Compile Include="CRCKermit.cs" />
+    <Compile Include="DBCheck.cs" />
+    <Compile Include="Ean13.cs" />
+    <Compile Include="Email.cs" />
+    <Compile Include="FBedChange.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FBedChange.Designer.cs">
+      <DependentUpon>FBedChange.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Fis.cs" />
+    <Compile Include="FisBarkodlu.cs" />
+    <Compile Include="FisBarkodlu2.cs" />
+    <Compile Include="FisCitizen.cs" />
+    <Compile Include="FIslemler.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FIslemler.Designer.cs">
+      <DependentUpon>FIslemler.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FisOPOS.cs" />
+    <Compile Include="FisYarat.cs" />
+    <Compile Include="BarVerkauf.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BarVerkauf.Designer.cs">
+      <DependentUpon>BarVerkauf.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_AbmeldungNeue.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_AbmeldungNeue.Designer.cs">
+      <DependentUpon>F_AbmeldungNeue.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_AchtungAlkohol.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_AchtungAlkohol.Designer.cs">
+      <DependentUpon>F_AchtungAlkohol.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_AI_Predict.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_AI_Predict.Designer.cs">
+      <DependentUpon>F_AI_Predict.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_AnfangBestand.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_AnfangBestand.Designer.cs">
+      <DependentUpon>F_AnfangBestand.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_ArtikelGiris.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_ArtikelGiris.Designer.cs">
+      <DependentUpon>F_ArtikelGiris.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_ArtikelGirisRest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_ArtikelGirisRest.designer.cs">
+      <DependentUpon>F_ArtikelGirisRest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_Auw.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_Auw.Designer.cs">
+      <DependentUpon>F_Auw.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_CameraWagenCheck.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_CameraWagenCheck.Designer.cs">
+      <DependentUpon>F_CameraWagenCheck.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_Datev_Login.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_Datev_Login.Designer.cs">
+      <DependentUpon>F_Datev_Login.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_ebonCodeEingabe.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_ebonCodeEingabe.Designer.cs">
+      <DependentUpon>F_ebonCodeEingabe.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_eBonPaymentInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_eBonPaymentInfo.Designer.cs">
+      <DependentUpon>F_eBonPaymentInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_FeinKostBedinerAuswahl.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_FeinKostBedinerAuswahl.Designer.cs">
+      <DependentUpon>F_FeinKostBedinerAuswahl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_GeldEinlage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_GeldEinlage.Designer.cs">
+      <DependentUpon>F_GeldEinlage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_GeldEntnahme.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_GeldEntnahme.Designer.cs">
+      <DependentUpon>F_GeldEntnahme.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_GenericSoru.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_GenericSoru.Designer.cs">
+      <DependentUpon>F_GenericSoru.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_Bediener.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_Bediener.Designer.cs">
+      <DependentUpon>F_Bediener.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_EConay.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_EConay.Designer.cs">
+      <DependentUpon>F_EConay.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_GenericError.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_GenericError.Designer.cs">
+      <DependentUpon>F_GenericError.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_GeraboInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_GeraboInfo.Designer.cs">
+      <DependentUpon>F_GeraboInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_GrossSummeBesteatigung.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_GrossSummeBesteatigung.Designer.cs">
+      <DependentUpon>F_GrossSummeBesteatigung.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_HandAufladeDAOnay.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_HandAufladeDAOnay.Designer.cs">
+      <DependentUpon>F_HandAufladeDAOnay.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_HandAufladeReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_HandAufladeReport.Designer.cs">
+      <DependentUpon>F_HandAufladeReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_HandyAuflade.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_HandyAuflade.Designer.cs">
+      <DependentUpon>F_HandyAuflade.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_HandyAufladeCreditHinweis.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_HandyAufladeCreditHinweis.Designer.cs">
+      <DependentUpon>F_HandyAufladeCreditHinweis.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_HandyAufladeDR.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_HandyAufladeDR.Designer.cs">
+      <DependentUpon>F_HandyAufladeDR.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_HandyAufladeProdukt_Mopin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_HandyAufladeProdukt_Mopin.designer.cs">
+      <DependentUpon>F_HandyAufladeProdukt_Mopin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_Kiosk.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_Kiosk.Designer.cs">
+      <DependentUpon>F_Kiosk.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_Kiosk_Bar_EC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_Kiosk_Bar_EC.Designer.cs">
+      <DependentUpon>F_Kiosk_Bar_EC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_Kiosk_Bearbeiten.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_Kiosk_Bearbeiten.Designer.cs">
+      <DependentUpon>F_Kiosk_Bearbeiten.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_Kiosk_Zahlung.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_Kiosk_Zahlung.Designer.cs">
+      <DependentUpon>F_Kiosk_Zahlung.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_KolliAuswahl.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_KolliAuswahl.Designer.cs">
+      <DependentUpon>F_KolliAuswahl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_KreditRuckzahlung.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_KreditRuckzahlung.Designer.cs">
+      <DependentUpon>F_KreditRuckzahlung.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_KundenDisplay.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_KundenDisplay.Designer.cs">
+      <DependentUpon>F_KundenDisplay.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_KundenDisplayKurz.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_KundenDisplayKurz.Designer.cs">
+      <DependentUpon>F_KundenDisplayKurz.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_KundenDisplay_Top.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_KundenDisplay_Top.Designer.cs">
+      <DependentUpon>F_KundenDisplay_Top.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_KundenDisplay_V1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_KundenDisplay_V1.Designer.cs">
+      <DependentUpon>F_KundenDisplay_V1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_KundenDisplay_V2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_KundenDisplay_V2.designer.cs">
+      <DependentUpon>F_KundenDisplay_V2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_Licence.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_Licence.Designer.cs">
+      <DependentUpon>F_Licence.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_LicenceError.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_LicenceError.Designer.cs">
+      <DependentUpon>F_LicenceError.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_Lizenz2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_Lizenz2.Designer.cs">
+      <DependentUpon>F_Lizenz2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_Log.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_Log.Designer.cs">
+      <DependentUpon>F_Log.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_Multiparking.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_Multiparking.designer.cs">
+      <DependentUpon>F_Multiparking.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_MultiStafelSelect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_MultiStafelSelect.Designer.cs">
+      <DependentUpon>F_MultiStafelSelect.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_Neuste.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_Neuste.Designer.cs">
+      <DependentUpon>F_Neuste.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_ObstGemuseManual.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_ObstGemuseManual.Designer.cs">
+      <DependentUpon>F_ObstGemuseManual.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_ObstGemuseStuck.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_ObstGemuseStuck.Designer.cs">
+      <DependentUpon>F_ObstGemuseStuck.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_PozSatis.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_PozSatis.designer.cs">
+      <DependentUpon>F_PozSatis.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_PozUmbuchen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_PozUmbuchen.Designer.cs">
+      <DependentUpon>F_PozUmbuchen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_Preisauswahl.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_Preisauswahl.designer.cs">
+      <DependentUpon>F_Preisauswahl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_PreisCheck.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_PreisCheck.Designer.cs">
+      <DependentUpon>F_PreisCheck.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_PrinterAuswahl.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_PrinterAuswahl.Designer.cs">
+      <DependentUpon>F_PrinterAuswahl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_PunkteOderRabat.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_PunkteOderRabat.Designer.cs">
+      <DependentUpon>F_PunkteOderRabat.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_RakamForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_RakamForm.Designer.cs">
+      <DependentUpon>F_RakamForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_scheckBestatigung.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_scheckBestatigung.Designer.cs">
+      <DependentUpon>F_scheckBestatigung.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_SelfCheckout.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_SelfCheckout.designer.cs">
+      <DependentUpon>F_SelfCheckout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_SelfCheckoutSplash.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_SelfCheckoutSplash.Designer.cs">
+      <DependentUpon>F_SelfCheckoutSplash.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_ServerOff.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_ServerOff.Designer.cs">
+      <DependentUpon>F_ServerOff.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_Splash.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_Splash.Designer.cs">
+      <DependentUpon>F_Splash.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_Storno.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_Storno.Designer.cs">
+      <DependentUpon>F_Storno.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_SystemParameter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_SystemParameter.Designer.cs">
+      <DependentUpon>F_SystemParameter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_Test.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_Test.designer.cs">
+      <DependentUpon>F_Test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_Tisch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_Tisch.designer.cs">
+      <DependentUpon>F_Tisch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_TischProdukt.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_TischProdukt.designer.cs">
+      <DependentUpon>F_TischProdukt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_TSEexport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_TSEexport.Designer.cs">
+      <DependentUpon>F_TSEexport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_TSEInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_TSEInfo.Designer.cs">
+      <DependentUpon>F_TSEInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_UrunYok.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_UrunYok.Designer.cs">
+      <DependentUpon>F_UrunYok.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_Waage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_Waage.Designer.cs">
+      <DependentUpon>F_Waage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_WaageManuel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_WaageManuel.Designer.cs">
+      <DependentUpon>F_WaageManuel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_WaageMsj.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_WaageMsj.Designer.cs">
+      <DependentUpon>F_WaageMsj.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_XBericht.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_XBericht.Designer.cs">
+      <DependentUpon>F_XBericht.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_ZahlungTypRechnung.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_ZahlungTypRechnung.Designer.cs">
+      <DependentUpon>F_ZahlungTypRechnung.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_Zarchive.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_Zarchive.Designer.cs">
+      <DependentUpon>F_Zarchive.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_ZAuswahl.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_ZAuswahl.Designer.cs">
+      <DependentUpon>F_ZAuswahl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_ZKorrektur.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_ZKorrektur.Designer.cs">
+      <DependentUpon>F_ZKorrektur.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gerabo.cs" />
+    <Compile Include="GeraboAccount.cs" />
+    <Compile Include="GeraboAccountInfo.cs" />
+    <Compile Include="GeraboHistory.cs" />
+    <Compile Include="GeraboMeta.cs" />
+    <Compile Include="GeraboProfile.cs" />
+    <Compile Include="GeraboPunkteeinlosung.cs" />
+    <Compile Include="GeraboReturn.cs" />
+    <Compile Include="geraboVerkauf.cs" />
+    <Compile Include="GeraboWebReq.cs" />
+    <Compile Include="GVTypEnum.cs" />
+    <Compile Include="JahresUbernahme.cs" />
+    <Compile Include="Kasiyerler.cs" />
+    <Compile Include="KolliKiste.cs" />
+    <Compile Include="KundenDisplayVersion.cs" />
+    <Compile Include="LD.cs" />
+    <Compile Include="Log.cs" />
+    <Compile Include="Musteri.cs" />
+    <Compile Include="Pinlist.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="ReaUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ReaUserControl.Designer.cs">
+      <DependentUpon>ReaUserControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Registry.cs" />
+    <Compile Include="SatisYap.cs" />
+    <Compile Include="ScrollVerical.cs" />
+    <Compile Include="SellPinList.cs" />
+    <Compile Include="StaffelInfo.cs" />
+    <Compile Include="SystemCheck.cs" />
+    <Compile Include="tarih.cs" />
+    <Compile Include="Enum.cs" />
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MysqlConnection.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="TischAktuellBon.cs" />
+    <Compile Include="TSEClasses.cs" />
+    <Compile Include="TSE_Notfall.cs" />
+    <Compile Include="UrunGrup.cs" />
+    <Compile Include="User.cs" />
+    <Compile Include="UstIdEnum.cs" />
+    <Compile Include="VirgulAyikla.cs" />
+    <Compile Include="WebReq.cs" />
+    <Compile Include="WOLClass.cs" />
+    <Compile Include="YetkiCheck.cs" />
+    <EmbeddedResource Include="BarVerkauf.de-DE.resx">
+      <DependentUpon>BarVerkauf.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Casio.de-DE.resx">
+      <DependentUpon>Casio.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Casio.resx">
+      <DependentUpon>Casio.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BarVerkauf.resx">
+      <DependentUpon>BarVerkauf.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FBedChange.de-DE.resx">
+      <DependentUpon>FBedChange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FBedChange.resx">
+      <DependentUpon>FBedChange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FIslemler.de-DE.resx">
+      <DependentUpon>FIslemler.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FIslemler.resx">
+      <DependentUpon>FIslemler.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_AbmeldungNeue.resx">
+      <DependentUpon>F_AbmeldungNeue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_AchtungAlkohol.resx">
+      <DependentUpon>F_AchtungAlkohol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_AI_Predict.resx">
+      <DependentUpon>F_AI_Predict.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_AnfangBestand.resx">
+      <DependentUpon>F_AnfangBestand.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_ArtikelGiris.de-DE.resx">
+      <DependentUpon>F_ArtikelGiris.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_ArtikelGiris.en-GB.resx">
+      <DependentUpon>F_ArtikelGiris.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_ArtikelGiris.resx">
+      <DependentUpon>F_ArtikelGiris.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_ArtikelGiris.tr-TR.resx">
+      <DependentUpon>F_ArtikelGiris.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_ArtikelGirisRest.de-DE.resx">
+      <DependentUpon>F_ArtikelGirisRest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_ArtikelGirisRest.resx">
+      <DependentUpon>F_ArtikelGirisRest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_Auw.resx">
+      <DependentUpon>F_Auw.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_Bediener.de-DE.resx">
+      <DependentUpon>F_Bediener.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_CameraWagenCheck.resx">
+      <DependentUpon>F_CameraWagenCheck.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_Datev_Login.resx">
+      <DependentUpon>F_Datev_Login.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_ebonCodeEingabe.resx">
+      <DependentUpon>F_ebonCodeEingabe.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_eBonPaymentInfo.resx">
+      <DependentUpon>F_eBonPaymentInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_EConay.de-DE.resx">
+      <DependentUpon>F_EConay.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_FeinKostBedinerAuswahl.resx">
+      <DependentUpon>F_FeinKostBedinerAuswahl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_GeldEinlage.resx">
+      <DependentUpon>F_GeldEinlage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_GeldEntnahme.resx">
+      <DependentUpon>F_GeldEntnahme.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_GenericError.de-DE.resx">
+      <DependentUpon>F_GenericError.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_GenericSoru.de-DE.resx">
+      <DependentUpon>F_GenericSoru.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_GenericSoru.resx">
+      <DependentUpon>F_GenericSoru.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_Bediener.resx">
+      <DependentUpon>F_Bediener.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_EConay.resx">
+      <DependentUpon>F_EConay.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_GenericError.resx">
+      <DependentUpon>F_GenericError.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_GeraboInfo.resx">
+      <DependentUpon>F_GeraboInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_GrossSummeBesteatigung.resx">
+      <DependentUpon>F_GrossSummeBesteatigung.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_HandAufladeDAOnay.resx">
+      <DependentUpon>F_HandAufladeDAOnay.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_HandAufladeReport.resx">
+      <DependentUpon>F_HandAufladeReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_HandyAuflade.resx">
+      <DependentUpon>F_HandyAuflade.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_HandyAufladeCreditHinweis.resx">
+      <DependentUpon>F_HandyAufladeCreditHinweis.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_HandyAufladeDR.resx">
+      <DependentUpon>F_HandyAufladeDR.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_HandyAufladeProdukt_Mopin.resx">
+      <DependentUpon>F_HandyAufladeProdukt_Mopin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_Kiosk.resx">
+      <DependentUpon>F_Kiosk.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_Kiosk_Bar_EC.resx">
+      <DependentUpon>F_Kiosk_Bar_EC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_Kiosk_Bearbeiten.resx">
+      <DependentUpon>F_Kiosk_Bearbeiten.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_Kiosk_Zahlung.resx">
+      <DependentUpon>F_Kiosk_Zahlung.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_KolliAuswahl.resx">
+      <DependentUpon>F_KolliAuswahl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_KreditRuckzahlung.resx">
+      <DependentUpon>F_KreditRuckzahlung.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_KundenDisplay.resx">
+      <DependentUpon>F_KundenDisplay.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_KundenDisplayKurz.resx">
+      <DependentUpon>F_KundenDisplayKurz.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_KundenDisplay_Top.resx">
+      <DependentUpon>F_KundenDisplay_Top.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_KundenDisplay_V1.resx">
+      <DependentUpon>F_KundenDisplay_V1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_KundenDisplay_V2.resx">
+      <DependentUpon>F_KundenDisplay_V2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_Licence.resx">
+      <DependentUpon>F_Licence.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_LicenceError.resx">
+      <DependentUpon>F_LicenceError.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_Lizenz2.resx">
+      <DependentUpon>F_Lizenz2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_Log.resx">
+      <DependentUpon>F_Log.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_Multiparking.resx">
+      <DependentUpon>F_Multiparking.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_MultiStafelSelect.resx">
+      <DependentUpon>F_MultiStafelSelect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_Neuste.resx">
+      <DependentUpon>F_Neuste.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_ObstGemuseManual.de-DE.resx">
+      <DependentUpon>F_ObstGemuseManual.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_ObstGemuseManual.resx">
+      <DependentUpon>F_ObstGemuseManual.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_ObstGemuseStuck.de-DE.resx">
+      <DependentUpon>F_ObstGemuseStuck.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_ObstGemuseStuck.resx">
+      <DependentUpon>F_ObstGemuseStuck.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_PozSatis.resx">
+      <DependentUpon>F_PozSatis.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_PozUmbuchen.resx">
+      <DependentUpon>F_PozUmbuchen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_Preisauswahl.resx">
+      <DependentUpon>F_Preisauswahl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_PreisCheck.resx">
+      <DependentUpon>F_PreisCheck.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_PrinterAuswahl.resx">
+      <DependentUpon>F_PrinterAuswahl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_PunkteOderRabat.resx">
+      <DependentUpon>F_PunkteOderRabat.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_RakamForm.resx">
+      <DependentUpon>F_RakamForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_scheckBestatigung.resx">
+      <DependentUpon>F_scheckBestatigung.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_SelfCheckout.de-DE.resx">
+      <DependentUpon>F_SelfCheckout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_SelfCheckout.resx">
+      <DependentUpon>F_SelfCheckout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_SelfCheckoutSplash.resx">
+      <DependentUpon>F_SelfCheckoutSplash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_ServerOff.de-DE.resx">
+      <DependentUpon>F_ServerOff.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_ServerOff.resx">
+      <DependentUpon>F_ServerOff.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_Splash.af.resx">
+      <DependentUpon>F_Splash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_Splash.de-DE.resx">
+      <DependentUpon>F_Splash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_Splash.resx">
+      <DependentUpon>F_Splash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_Storno.de-DE.resx">
+      <DependentUpon>F_Storno.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_Storno.resx">
+      <DependentUpon>F_Storno.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_SystemParameter.resx">
+      <DependentUpon>F_SystemParameter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_Test.resx">
+      <DependentUpon>F_Test.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_Tisch.resx">
+      <DependentUpon>F_Tisch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_TischProdukt.resx">
+      <DependentUpon>F_TischProdukt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_TSEexport.resx">
+      <DependentUpon>F_TSEexport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_TSEInfo.resx">
+      <DependentUpon>F_TSEInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_UrunYok.de-DE.resx">
+      <DependentUpon>F_UrunYok.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_UrunYok.resx">
+      <DependentUpon>F_UrunYok.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_Waage.resx">
+      <DependentUpon>F_Waage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_WaageManuel.de-DE.resx">
+      <DependentUpon>F_WaageManuel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_WaageManuel.resx">
+      <DependentUpon>F_WaageManuel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_WaageMsj.resx">
+      <DependentUpon>F_WaageMsj.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_XBericht.de-DE.resx">
+      <DependentUpon>F_XBericht.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_XBericht.resx">
+      <DependentUpon>F_XBericht.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_ZahlungTypRechnung.resx">
+      <DependentUpon>F_ZahlungTypRechnung.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_Zarchive.resx">
+      <DependentUpon>F_Zarchive.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_ZAuswahl.resx">
+      <DependentUpon>F_ZAuswahl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_ZKorrektur.resx">
+      <DependentUpon>F_ZKorrektur.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ReaUserControl.resx">
+      <DependentUpon>ReaUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="app.manifest" />
+    <None Include="App1.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="gdpdu-01-08-2002.dtd" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ses\Ambulans.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ses\miata_horn.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ses\Resources\Image1.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ses\Resources\Areter2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ses\Resources\ArreterSZ.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ses\Resources\logout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ses\Resources\user.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="eckart.jpeg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="error-page.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="errorK.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="info.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="waage.jpeg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="euro1.jpeg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bilisim.jpeg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bilisim2.jpeg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ses\Resources\rstart.jpeg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="soru-isareti.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="mayd1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="x.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="park.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="parkyasak.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="produkt1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ses\Resources\settings.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ses\Resources\1369975492_printer-green.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ses\Resources\print_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="printer-green.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ses\Resources\oneSafe-Mac-icon.175x175-75.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="printer-red.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="sagok.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="solok.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="1cent2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="1euro.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="2cent.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="2euro.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="5cent.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="10cent.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="20cent.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="50cent.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ses\Resources\Achtung.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ses\Resources\test1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Image2.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ses\Resources\soru_isareti.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="AxWMPLib">
+      <Guid>{6BF52A50-394A-11D3-B153-00C04F79FAA6}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>aximp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+    <COMReference Include="OposScanner_CCO">
+      <Guid>{CCB90180-B81E-11D2-AB74-0040054C3719}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="WMPLib">
+      <Guid>{6BF52A50-394A-11D3-B153-00C04F79FAA6}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\KD.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\login-png-image-54490.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\logout-256.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\login-256.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cafe-128.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cafe-256.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\coffee-256.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\os-windows-128.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\iss-pos-kasa.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ausweis-original.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\aufent-Vorderseite.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\parking.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\geraboLogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\gerabo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ebonlogo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Release\BildGastro\classic_burger.png" />
+    <None Include="bin\Release\BildGastro\NoImage.png" />
+    <None Include="bin\Release\BildGastro\imHaus.png" />
+    <None Include="bin\Release\BildGastro\zummitnehmen.png" />
+    <None Include="bin\Release\BildGastro\ec-und-giro-Logo.png" />
+    <None Include="bin\Release\BildGastro\Bar.png" />
+    <Content Include="Kasse128x128.ico" />
+    <Content Include="MySqlBackup.dll" />
+    <None Include="Resources\windsoftTech_logo%283%29%281%29.png" />
+    <None Include="Resources\12924.JPG" />
+    <None Include="Resources\Auflade.png" />
+    <None Include="Resources\3917132.png" />
+    <None Include="Resources\artificial-intelligence.jpg" />
+    <None Include="Resources\Kunden.png" />
+    <None Include="Resources\1688551306-61baf4c8202c452187115a10_datev-meine-steuern.png" />
+    <None Include="Resources\Datev.svg.png" />
+    <None Include="Resources\DatevVerbinden.png" />
+    <None Include="Resources\Datev-verbunden.png" />
+    <None Include="Resources\beer.png" />
+    <None Include="Resources\green-add-button-12011.png" />
+    <None Include="Resources\minus-circle-red-symbol-22248.png" />
+    <None Include="Resources\garbage-bin-10420%281%29.png" />
+    <None Include="Resources\bestellen.png" />
+    <None Include="Resources\bestellen1.png" />
+    <None Include="Resources\bestellen12.png" />
+    <None Include="Resources\iss.gif" />
+    <None Include="Resources\ChatGPT Image 13. Dez. 2025, 01_59_21.png" />
+    <None Include="Resources\Cam_Alisveris.png" />
+    <None Include="Resources\Cam_Alisveris1.png" />
+    <Content Include="WormAPI.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WormAPIcsharp.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="Resources\codecode.jpg" />
+    <None Include="Resources\ISS_Yeni_logo_register%281%29.png" />
+    <None Include="Resources\Epay.png" />
+    <None Include="Resources\archives.png" />
+    <None Include="Resources\collaboration.png" />
+    <None Include="Resources\images12.jpeg" />
+    <None Include="Resources\printer-yellow.png" />
+    <None Include="Resources\500Eur.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Font\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="packages\Microsoft.Web.WebView2.1.0.2194-prerelease\build\Microsoft.Web.WebView2.targets" Condition="Exists('packages\Microsoft.Web.WebView2.1.0.2194-prerelease\build\Microsoft.Web.WebView2.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\Microsoft.Web.WebView2.1.0.2194-prerelease\build\Microsoft.Web.WebView2.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.Web.WebView2.1.0.2194-prerelease\build\Microsoft.Web.WebView2.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

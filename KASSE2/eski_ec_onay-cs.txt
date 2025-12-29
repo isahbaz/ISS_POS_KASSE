@@ -1,0 +1,630 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+using Microsoft.Win32;
+using EasyZVTDLL;
+//using System.Diagnostics;
+using System.Net;
+using System.Security.Policy;
+using System.Security;
+using System.Threading;
+using iss_Rea;
+using System.IO;
+
+
+namespace IS_KASSE
+{
+    public partial class F_EConay : Form
+    {
+        public bool odemesonuc = false;
+        public double toptutar = 0;
+        EasyZVTDLL.EasyZVT objEasyZVT;
+        long Ergebnis;
+        isstoRea Rea;
+        string line = "", alteline = "";
+        bool pr = true;
+        Thread ECoku;
+        List<string> dizi = new List<string>();
+        public F_EConay()
+        {
+            /* Process p = new Process();
+             p.StartInfo.FileName = ("caspol.exe"); ;
+             p.StartInfo.Arguments = ("machine addfulltrust EasyZVT.exe");
+             p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+             p.StartInfo.RedirectStandardOutput = true;
+             p.StartInfo.RedirectStandardError = true;
+             p.StartInfo.UseShellExecute = false;
+             if (!String.IsNullOrEmpty(currentDirectory))
+                 p.StartInfo.WorkingDirectory = currentDirectory;
+             p.StartInfo.CreateNoWindow = false;
+
+             p.Start();
+             ExecuteProcess("caspol -machine -addfulltrust MyPerm.exe");*/
+            // AppDomain.CreateDomain( string friendlyName, Evidence securityInfo, AppDomainSetup info,PermissionSet grantSet, params StrongName[] fullTrustAssemblies);
+            InitializeComponent();
+        }
+
+        private void F_EConay_Load(object sender, EventArgs e)
+        {
+            label3.Visible = false;
+        }
+
+        private void kryptonButton2_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if ((Program.zvt == "ReaRetail") || (Program.zvt == "Rea"))
+                {
+
+                    try
+                    {
+                        kryptonButton1.Enabled = false;
+                        kryptonButton2.Enabled = false;
+                        Rea = new iss_Rea.isstoRea();
+                        Thread TXToku = new Thread(new ThreadStart(timer1Tick));
+                        TXToku.Start();
+                        ECoku = new Thread(new ThreadStart(ec));
+
+                        pr = false;
+
+                        if (!ECoku.IsAlive)
+                        {
+                            try
+                            {
+                                if (ECoku.ThreadState != ThreadState.Stopped)
+                                {
+                                    ECoku.Start();
+                                }
+                            }
+                            catch
+                            {
+                            }
+                            if (ECoku.ThreadState == ThreadState.Stopped)
+                            {
+                                ECoku = new Thread(new ThreadStart(ec));
+                                ECoku.Start();
+                            }
+                        }
+                        Rea.Betrag = BetragFormat(toptutar);
+                    }
+                    catch (Exception ee)
+                    {
+                        label2.Text = ee.Message;
+                        kryptonButton1.Enabled = true;
+                        kryptonButton2.Enabled = true;
+                    }
+
+                }
+                else if (Program.zvt == "Easy1")
+                {
+                    label3.Visible = true;
+                    label3.Text = "von der Kasse :"+toptutar.ToString("N");
+                    MailMethode();
+                    
+                }
+                else if (Program.zvt == "Easy2")
+                {
+                    label3.Visible = true;
+                    label3.Text = "von der Kasse :" + toptutar.ToString("N");
+                    objEasyZVT = new EasyZVT();
+                    EasyDLLMethode();
+                    
+                }
+                else
+                {
+                    odemesonuc = true;
+                    this.Close();
+                }
+            }
+            catch (Exception ss)
+            {
+                F_GenericError frmerror = new F_GenericError();
+                frmerror.lblMesaj.Text = ss.Message;
+                frmerror.ShowDialog();
+            }
+        }
+        Thread ReaTXTRead = null;
+        Thread ReaVerlauf = null;
+        private void ec()
+        {
+            try
+            {
+                CheckForIllegalCrossThreadCalls = false;
+
+                ReaTXTRead = new Thread(new ThreadStart(timer1Tick));
+                ReaTXTRead.Start();
+
+                ReaVerlauf = new Thread(new ThreadStart(ReaVerlaufProc));
+                ReaVerlauf.Start();
+
+               
+            }
+            catch
+            {
+            }
+
+
+
+
+        }
+        private void timer1Tick()
+        {
+            
+            
+
+            while (pr == false)
+            {
+               /* if (!backgroundWorker1.IsBusy)
+                {
+                    try
+                    {
+                        backgroundWorker1.RunWorkerAsync();
+                    }
+                    catch
+                    {
+                    }
+                }*/
+                try
+                {
+                    Thread.Sleep(500);
+                    //List<string> dizi = new List<string>();
+                    //       MessageBox.Show(Application.StartupPath);
+                    System.IO.StreamReader file = new System.IO.StreamReader("REAZVT.txt");
+                    while ((line = file.ReadLine()) != null)
+                    {
+                        if (line != null)
+                        {
+
+                            // dizi.Add(line);
+
+                            if (dizi.Contains(line))
+                            {
+                            }
+                            else
+                            {
+                                dizi.Add(line);
+                                label2.Text = (dizi[dizi.Count - 1]);
+                            }
+
+                            //counter++;*/
+                        }
+                        else
+                        {
+                            label2.Text = (dizi[dizi.Count - 1]);
+                        }
+                    }
+
+
+                    file.Close();
+
+                }
+                catch
+                {
+                    Thread.Sleep(200);
+                    //timer1.Start();
+                }
+            
+            }
+        }
+        private void ReaVerlaufProc()
+        {
+            CheckForIllegalCrossThreadCalls = false;
+            label2.Text = "";
+            Rea.WriteInDatei();
+            //timer1Tick();
+            string erg = "";
+            erg = Rea.ZwischenInfo();
+            label2.Text = erg;
+            if (erg != "")
+            {
+                Rea.exit();
+                pr = true;
+                try
+                {
+                    if (erg == "OK")
+                    {
+                        odemesonuc = true;
+                        if (Program.zvt == "ReaRetail")
+                        {
+                            BelegVorberaiten();
+                        }
+                        Rea.exit();
+                        kryptonButton1.Enabled = true;
+                        kryptonButton2.Enabled = true;
+                        //backgroundWorker1.CancelAsync();
+                        ReaTXTRead.Abort();
+
+
+                        // ReaVerlauf.Suspend;
+
+                        this.Close();
+
+                    }
+                    else
+                    {
+                        kryptonButton1.Enabled = true;
+                        kryptonButton2.Enabled = true;
+                        label2.Text = erg;
+                        ReaTXTRead.Abort();
+                        //ReaVerlauf.Abort();
+                    }
+                   
+
+
+                }
+                catch (Exception ss)
+                {
+                    //MessageBox.Show(ss.Message);
+                }
+                
+            }
+
+
+        }
+
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+             try
+            {
+                Thread.Sleep(500);
+                //List<string> dizi = new List<string>();
+                //       MessageBox.Show(Application.StartupPath);
+                System.IO.StreamReader file = new System.IO.StreamReader("REAZVT.txt");
+                while ((line = file.ReadLine()) != null)
+                {
+                    if (line != null)
+                    {
+
+                        // dizi.Add(line);
+
+                        if (dizi.Contains(line))
+                        {
+                        }
+                        else
+                        {
+                            dizi.Add(line);
+                            label2.Text = (dizi[dizi.Count - 1]);
+                        }
+
+                        //counter++;*/
+                    }
+                    else
+                    {
+                        label2.Text = (dizi[dizi.Count - 1]);
+                    }
+                }
+
+
+                file.Close();
+
+            }
+            catch
+            {
+                Thread.Sleep(200);
+                timer1.Start();
+            }
+            
+        }
+        private void BelegVorberaiten()
+        {
+            try
+            {
+                if (File.Exists("REAZVT.tck"))
+                {
+                    List<string> ticket = File.ReadLines("REAZVT.tck", System.Text.Encoding.Default).ToList();
+                    /* Program.handlerbeleg = new List<string>();
+                     Program.kundenbeleg = new List<string>();*/
+                    string islem = "";
+                    foreach (string line in ticket)
+                    {
+                        /*if (line.Substring(0, 1) == "C")
+                        {
+                            if (line.Substring(1, 1) != "F")
+                            {
+                                string[] inf = line.Split(';');
+                                Program.kundenbeleg.Add(inf[1]);
+                            }
+                        }
+                        else
+                        {
+                            if (line.Substring(1, 1) != "F")
+                            {
+                                string[] inf = line.Split(';');
+                                Program.handlerbeleg.Add(inf[1]);
+                            }
+                        }*/
+                        string[] inf = line.Split(';');
+                        if (inf[1] == "")
+                        {
+                            continue;
+                        }
+                        else
+                        {
+
+                            if (inf[1].Contains("Kundenbeleg") == true)
+                            {
+                                islem = "kunde";
+                            }
+                            else if (inf[1].Contains("Händlerbeleg") == true)
+                            {
+                                islem = "handler";
+                            }
+                            if (islem == "kunde")
+                            {
+                                Program.kundenbeleg.Add(inf[1]);
+                            }
+                            else if (islem == "handler")
+                            {
+                                Program.handlerbeleg.Add(inf[1]);
+                            }
+
+                            /* if (((inf[1].Substring(0,1) == "*") && (inf[1].Substring(1,1) == " ") && (inf[1].Substring(2,1) == "*"))&&(islem==""))
+                             {
+                                 islem = "kunde";
+
+                             }
+                             else if (((inf[1].Substring(0, 1) == "*") && (inf[1].Substring(1, 1) == " ") && (inf[1].Substring(2, 1) == "*")) && (islem == ""))
+                             {
+                                 islem = "kunde";
+
+                             }*/
+                        }
+
+
+                    }
+                }
+            }
+            catch
+            {
+            }
+        }
+
+
+        public void EasyDLLMethode()
+        {
+
+            try
+            {
+                RegistryKey SoftwareKey = Registry.CurrentUser.OpenSubKey("Software", true);
+                RegistryKey GUBKey = SoftwareKey.CreateSubKey("GUB");
+                RegistryKey ZVTKey = GUBKey.CreateSubKey("ZVT");
+
+                // Parameter die in der Anwendung gespeichert sein sollten
+                /*ZVTKey.SetValue("KasseNr", 1, RegistryValueKind.DWord);
+                ZVTKey.SetValue("IP", "192.168.101.222", RegistryValueKind.String)
+                ZVTKey.SetValue("Port", 22000, RegistryValueKind.DWord)
+                ZVTKey.SetValue("Lizenz", "", RegistryValueKind.String)*/
+                // Zur Demo mit oder ohne Dialog
+                /*If CheckBoxDialog.Checked() Then
+                    ZVTKey.SetValue("Dialog", 1, RegistryValueKind.DWord) ' Mit kleinem Dialog
+                Else
+                    ZVTKey.SetValue("Dialog", 3, RegistryValueKind.DWord) ' ohne Dialog
+                End If
+    */
+                //'Dynamischer Parameter, normalerweise der zu kassierende Betrag
+                string pString = toptutar.ToString("N");
+                string pTemizlenmis = "";
+                long lPreis = 0;
+                if (pString.Contains(','))
+                {
+                    int vPoz = pString.IndexOf(',');
+
+                    pTemizlenmis = pString.Substring(0, vPoz) + (pString.Substring(vPoz + 1, pString.Length - (vPoz + 1)));
+
+                }
+                else
+                {
+                    pTemizlenmis = pString;
+                }
+                int ss = Convert.ToInt32(pTemizlenmis);
+                ZVTKey.SetValue("Betrag", ss, RegistryValueKind.DWord);
+                //ZVTKey.SetValue("Betrag", Convert.ToInt32(TextBoxBetrag.Text), RegistryValueKind.DWord);
+
+                ZVTKey.Close();
+                GUBKey.Close();
+                SoftwareKey.Close();
+
+                //'Ergebnis initialisieren
+                //TextBoxErgebnisText.Text = "";
+                //TextBoxErgebnisZahl.Text = "";
+                //Button1.Enabled = False	;' Prozess darf nicht unterbrochen werden, daher Buttons deaktivieren
+                //Button2.Enabled = False
+
+                //' Instanz von EasyZVT erzeugen
+                objEasyZVT = new EasyZVTDLL.EasyZVT();
+                // EasyZVT starten, EasyZVT startet asynchron, d.h. die Anwendung erhält die Steuerung soforrt zurück
+                objEasyZVT.Start();
+
+                //Laufe ich noch ... oder bin ich fertig
+                //Zeit = 500
+                timer1.Interval = 500;
+                timer1.Start();
+            }
+
+            catch (Exception ex)
+            {
+                F_GenericError frmerror = new F_GenericError();
+                frmerror.lblMesaj.Text = ex.Message;
+                frmerror.ShowDialog();
+            }
+        }
+        private string BetragFormat(double toptutar)
+        {
+            string pString = toptutar.ToString("N");
+            string pTemizlenmis = "";
+            long lPreis = 0;
+            if (pString.Contains(','))
+            {
+                int vPoz = pString.IndexOf(',');
+
+                pTemizlenmis = pString.Substring(0, vPoz) + (pString.Substring(vPoz + 1, pString.Length - (vPoz + 1)));
+                return pTemizlenmis;
+            }
+            else
+            {
+                pTemizlenmis = pString;
+                return pTemizlenmis;
+            }
+        }
+        public void MailMethode()
+        {
+            try
+            {
+                kryptonButton1.Enabled = false;
+                RegistryKey SoftwareKey = Registry.CurrentUser.OpenSubKey("Software", true);
+
+                RegistryKey GUBKey = SoftwareKey.CreateSubKey("GUB");
+
+                RegistryKey ZVTKey = GUBKey.CreateSubKey("ZVT");
+
+
+
+                // ' Parameter die in der Anwendung gespeichert sein sollten
+
+                /*   ZVTKey.SetValue("KasseNr", 1, RegistryValueKind.DWord);
+
+                   ZVTKey.SetValue("COM", "10", RegistryValueKind.String);
+
+                   //ZVTKey.SetValue("Port", 5577, RegistryValueKind.DWord);
+
+                   //ZVTKey.SetValue("Lizenz", "", RegistryValueKind.String);
+                 * 
+    */
+                string pString = toptutar.ToString("#0.00");
+                string pTemizlenmis = "";
+                long lPreis = 0;
+                if (pString.Contains(','))
+                {
+                    int vPoz = pString.IndexOf(',');
+
+                    pTemizlenmis = pString.Substring(0, vPoz) + (pString.Substring(vPoz + 1, pString.Length - (vPoz + 1)));
+
+                }
+                else
+                {
+                    pTemizlenmis = pString;
+                }
+                //label3.Text += "\nzur EC Kart Geräte: "+pTemizlenmis;
+                double ptemizTOzuruck=Convert.ToDouble(pTemizlenmis.Insert(pTemizlenmis.Length-2,","));
+                label3.Text += "\nzur EC Kart Geräte: " + ptemizTOzuruck;
+                if (toptutar != ptemizTOzuruck)
+                {
+                    kryptonButton1.Enabled = true;
+                    F_GenericError frmerror = new F_GenericError();
+                    frmerror.lblMesaj.Text = "BETRAG NICHT EINSTIMMEN!\nPROGRAM STOP!"; 
+                    frmerror.ShowDialog();
+                    return;
+                }
+                ZVTKey.SetValue("Betrag", Convert.ToInt32(pTemizlenmis), RegistryValueKind.DWord);
+
+
+
+                string Start = (string)ZVTKey.GetValue("START_UPDATE", "");
+
+                ZVTKey.SetValue("Ergebnis", 999, RegistryValueKind.DWord);
+
+                ZVTKey.SetValue("ErgebnisText", "Programmstart fehlgeschlagen", RegistryValueKind.String);
+
+
+
+                if ((Start.Length) > 1)
+                {
+
+                    ZVTKey.SetValue("Aktiv", 1, RegistryValueKind.DWord);
+
+                    System.Diagnostics.Process Proc = System.Diagnostics.Process.Start(Start);
+                    Proc.StartInfo.CreateNoWindow = false;
+                    Proc.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+
+
+                    //System.Threading.Thread.Sleep(5000);
+
+                    while (Convert.ToInt32(ZVTKey.GetValue("Aktiv")) == 1)
+                    {
+                        System.Threading.Thread.Sleep(500);
+                        label2.Text = (string)ZVTKey.GetValue("Zwischenstatus");
+                        CheckForIllegalCrossThreadCalls = false;
+                        //label2.Text = ErgebnisText;
+                        // Application.DoEvents();
+
+                    }
+
+                }
+
+                Ergebnis = Convert.ToInt32(ZVTKey.GetValue("Ergebnis"));
+                if (Ergebnis == 0)
+                {
+                    odemesonuc = true;
+                    this.Close();
+                }
+                else
+                {
+                    kryptonButton1.Enabled = true;
+                }
+
+                // ErgebnisText = (string)ZVTKey.GetValue("Zwischenstatus");
+                //label2.Text = ErgebnisText;
+
+
+                ZVTKey.Close();
+
+                GUBKey.Close();
+
+                SoftwareKey.Close();
+            }
+            catch (Exception sd)
+            {
+                F_GenericError frmerror = new F_GenericError();
+                frmerror.lblMesaj.Text = sd.Message;
+                frmerror.ShowDialog();
+            }
+        }
+        private void kryptonButton1_Click(object sender, EventArgs e)
+        {
+            odemesonuc = false;
+            this.Close();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            if (objEasyZVT == null)
+                objEasyZVT = new EasyZVT();
+            label2.Text = objEasyZVT.getStatusText();
+            //TextBoxZeit.Text = Zeit.ToString();
+            //Zeit += 500
+
+            if (objEasyZVT.getAktiv() == 0)
+            {
+                timer1.Stop();
+
+                label2.Text = "Fertig";
+                objEasyZVT = null;
+
+                RegistryKey SoftwareKey = Registry.CurrentUser.OpenSubKey("Software", true);
+                RegistryKey GUBKey = SoftwareKey.CreateSubKey("GUB");
+                RegistryKey ZVTKey = GUBKey.CreateSubKey("ZVT");
+                label2.Text = ZVTKey.GetValue("Ergebnis").ToString() + "->" + ZVTKey.GetValue("ErgebnisText").ToString();
+                if (ZVTKey.GetValue("Ergebnis").ToString() == "0")
+                {
+                    odemesonuc = true;
+                    this.Close();
+                }
+
+                //TextBoxErgebnisText.Text = ZVTKey.GetValue("ErgebnisText").ToString();
+                ZVTKey.Close();
+                GUBKey.Close();
+                SoftwareKey.Close();
+                //Button1.Enabled = True
+                //Button2.Enabled = True
+
+            }
+        }
+
+
+    }
+}
