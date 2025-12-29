@@ -4095,13 +4095,6 @@ namespace IS_KASSE
             // TSEanDATEV();
         }
 
-        private void kryptonButton5_Click_1(object sender, EventArgs e)
-        {
-            F_CameraWagenCheck cam= new F_CameraWagenCheck();
-            cam.ShowDialog();
-
-        }
-
         private void kryptonButton18_Click(object sender, EventArgs e)
         {
             KryptonButton kryptonButton = sender as KryptonButton;
