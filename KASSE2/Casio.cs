@@ -39,6 +39,8 @@ using System.Threading;
 using System.Windows.Forms;
 using AForge;
 using AForge.Video.DirectShow;
+using iss_Ronsson;
+using Newtonsoft.Json.Linq;
 namespace IS_KASSE
 {
     public partial class Casio : Form
@@ -144,8 +146,7 @@ namespace IS_KASSE
         FisOlustur yazilacakBon;
         dbConn baglanti = new dbConn();
         MySqlConnection myConn;
-<<<<<<< Updated upstream
-=======
+
         VideoCaptureDevice videoSource;
         VideoCaptureDevice videoSource2;
         private Bitmap _lastFrame1;
@@ -157,7 +158,7 @@ namespace IS_KASSE
         iss_smart_AI AILIB;
         string pathForAI = "";
         double AIScore;
->>>>>>> Stashed changes
+
         public Casio()
         {
             myConn = baglanti.myconn();
@@ -1166,10 +1167,7 @@ namespace IS_KASSE
             {
                 new Thread((ThreadStart)(() => HandyCardListeLoad())).Start();
             }
-<<<<<<< Updated upstream
-        }
 
-=======
             FilterInfoCollection videosources = new FilterInfoCollection(FilterCategory.VideoInputDevice);
             if ((Program.ProgramAyarlar["Cam1"] != "") && (Program.ProgramAyarlar["Cam1"] != null))
             {
@@ -1239,7 +1237,7 @@ namespace IS_KASSE
                 .OrderBy(c => c.FrameSize.Width * c.FrameSize.Height)
                 .First();
         }
->>>>>>> Stashed changes
+
         private void HandyCardListeLoad()
         {
             /* Handy = new iss_HandyAuflade_Main();
@@ -1422,8 +1420,7 @@ namespace IS_KASSE
                 }
                 else if (Program.GlobalAyarlar["WAAGE"] == 1) //Teraziden Okuma
                 {
-<<<<<<< Updated upstream
-=======
+
                     Bitmap snap = null;
                     if ((Program.ProgramAyarlar["Cam1"] != "") && (Program.ProgramAyarlar["Cam1"] != null))
                     {
@@ -1435,7 +1432,7 @@ namespace IS_KASSE
                         }
                         videoSource.SignalToStop();
                     }
->>>>>>> Stashed changes
+
                     try
                     {
                         Dictionary<object, object> Info = new Dictionary<object, object>();
@@ -1688,10 +1685,10 @@ namespace IS_KASSE
             }
             else if (btnTiklanan.TabIndex == 2)
             {
-<<<<<<< Updated upstream
+
                 /* F_WaageManuel frmmanual = new F_WaageManuel();
                  frmmanual.ShowDialog();
-=======
+
                 Bitmap snap = null;
                 if ((Program.ProgramAyarlar["Cam1"] != "") && (Program.ProgramAyarlar["Cam1"] != null))
                 {
@@ -1703,7 +1700,7 @@ namespace IS_KASSE
                     }
                     //videoSource.Stop();
                 }
->>>>>>> Stashed changes
+
 
                  if (frmmanual.sonuc == true)
                  {
@@ -3559,9 +3556,7 @@ namespace IS_KASSE
 
 
         }
-<<<<<<< Updated upstream
 
-=======
         public void ObstGemusePLU(string brkdOG)
         {
 
@@ -3809,7 +3804,7 @@ namespace IS_KASSE
             }
 
         }
->>>>>>> Stashed changes
+
         private void DSPENDE(string mesaj)
         {
             Application.DoEvents();
@@ -13653,8 +13648,7 @@ namespace IS_KASSE
 
         }
 
-<<<<<<< Updated upstream
-=======
+
         private void btnAIimage_Click(object sender, EventArgs e)
         {
             if (Program.ProgramAyarlar["AILibImage"] != null)
@@ -13767,7 +13761,7 @@ namespace IS_KASSE
                 }
             }
         }
->>>>>>> Stashed changes
+
         private void kryptonButton47_Click(object sender, EventArgs e)
         {
             PreisCheck = true;

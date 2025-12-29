@@ -99,7 +99,7 @@ namespace IS_KASSE
         public static string KartTyp = "";
         public static string ebon = "";
         public static List<string> issServer = new List<string>();
-       // public static string localBackup = "";
+        // public static string localBackup = "";
         public static bool DailyBackup = false;
         public static string localBackup = "0";
         public static int DruckerMode = 1; //1 : immer 2:nicht 3: letzter
@@ -127,7 +127,7 @@ namespace IS_KASSE
         public static int DispInfoNr = 0;
 
         //TSE
-        public static int TSEready=-1;
+        public static int TSEready = -1;
         public static string TSE;
         public static string TSEDrive;
         public static string TSEPin;
@@ -138,20 +138,20 @@ namespace IS_KASSE
         public static string TSELastError = "0";
         public static string TseLastErrorMessage = "";
         public static int TSEEmailSend = 0;
-        
+
         //TSE DLL
         public static F_TSEMain TSEdll = null;
         public static string HerstellerKasseID;
         public static string PublicKey = "";
-        public static WormStore MyWorm ;
+        public static WormStore MyWorm;
         //public static string TseLastErrorNo = "0";
         //
-        public static int TSEHealty = 0;   
+        public static int TSEHealty = 0;
 
         public static string companyToken = "";
         public static string companyID = "";
 
-        public static string WaitTime="";
+        public static string WaitTime = "";
 
         public static List<int> MwStList = null;
 
@@ -197,6 +197,10 @@ namespace IS_KASSE
         public static string ReaGerateTyp = "";
         static Logger ProgLog = new Logger("LOG\\SYSTEMSTART\\PROGRAM");
         public static User userClass = null;
+        public static string AILibImage = "";
+        public static string Cam1 = "";
+        public static string Cam2 = "";
+        public static string Cam3 = "";
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -204,12 +208,12 @@ namespace IS_KASSE
 
         static void Main()
         {
-           /* ept.ProgramAyarlar = Program.ProgramAyarlar;
-            ept.WaagePortName = Program.ProgramAyarlar["WPORT"];
-            ept.BenimEventim += new etp_extended_main.DisplayDelegate(DSPINFO);
-            satisYap = new SatisYap();
-            ept.WaageMitPLU(arananArtikel);
-            return;*/
+            /* ept.ProgramAyarlar = Program.ProgramAyarlar;
+             ept.WaagePortName = Program.ProgramAyarlar["WPORT"];
+             ept.BenimEventim += new etp_extended_main.DisplayDelegate(DSPINFO);
+             satisYap = new SatisYap();
+             ept.WaageMitPLU(arananArtikel);
+             return;*/
 
             try
             {
@@ -217,7 +221,7 @@ namespace IS_KASSE
                 ProgramAyarlar = new Dictionary<string, string>();
                 issServer.Add("http://52.58.67.112/iss-api/v1/");
                 issServer.Add("http://www.academicasoft.de/issapi/v1/");
-                
+
                 ModifyRegistry reg = new ModifyRegistry();
                 try
                 {
@@ -236,7 +240,7 @@ namespace IS_KASSE
 
                     kasano = Convert.ToInt16(reg.Read("Kasse Nr"));
                     ProgramAyarlar.Add("kasano", kasano.ToString());
-                    kasaAd = "KASSE "+kasano;
+                    kasaAd = "KASSE " + kasano;
 
                     PrinterLib = reg.Read("printerLib");
                     ProgramAyarlar.Add("PrinterLib", PrinterLib);
@@ -280,8 +284,8 @@ namespace IS_KASSE
                     mp = reg.Read("mp"); //multi parking
                     ProgramAyarlar.Add("mp", mp);
 
-                   // kb = reg.Read("kb");
-                   // KundenBarcodeInfo.Add(kb);
+                    // kb = reg.Read("kb");
+                    // KundenBarcodeInfo.Add(kb);
 
 
                     KartTyp = reg.Read("karttyp");
@@ -293,7 +297,7 @@ namespace IS_KASSE
                     ebon = reg.Read("ebon");
                     ProgramAyarlar.Add("econ", ebon);
 
-                    
+
                     LanPrinterSO1 = reg.Read("printer1SO");
                     ProgramAyarlar.Add("printer1SO", LanPrinterSO1);
 
@@ -354,7 +358,7 @@ namespace IS_KASSE
                     ProgramAyarlar.Add("TSEDrive", TSEDrive);
 
                     TSETimeAdmin = reg.Read("TSETimeAdmin");
-                    ProgramAyarlar.Add("TSETimeAdmin",TSETimeAdmin);
+                    ProgramAyarlar.Add("TSETimeAdmin", TSETimeAdmin);
 
                     ClientID = reg.Read("TSEClientID");
                     ProgramAyarlar.Add("ClientID", ClientID);
@@ -363,10 +367,10 @@ namespace IS_KASSE
                     ProgramAyarlar.Add("HerstellerKasseNr", HerstellerKasseID);
 
                     WaitTime = reg.Read("WaitTime");
-                    ProgramAyarlar.Add("WaitTime",WaitTime);
+                    ProgramAyarlar.Add("WaitTime", WaitTime);
                     //Camera und Kasse Integration
                     CamKas = reg.Read("CamKas");
-                    ProgramAyarlar.Add("CamKas",CamKas);
+                    ProgramAyarlar.Add("CamKas", CamKas);
                     CamPORT = reg.Read("CamPORT");
                     ProgramAyarlar.Add("CamPORT", CamPORT);
                     CamIP = reg.Read("CamIP");
@@ -385,9 +389,18 @@ namespace IS_KASSE
                     ProgramAyarlar.Add("markt", markt);
 
                     Modus = reg.Read("Modus");
-                   // Modus = "Kiosk";
+                    // Modus = "Kiosk";
                     ProgramAyarlar.Add("Modus", Modus);
                     //MessageBox.Show(WPORT + SPORT + KPORT + ServerIp);
+                    AILibImage = reg.Read("AILibImage");
+                    ProgramAyarlar.Add("AILibImage", AILibImage);
+
+                    Cam1 = reg.Read("Cam1");
+                    ProgramAyarlar.Add("Cam1", Cam1);
+                    Cam2 = reg.Read("Cam2");
+                    ProgramAyarlar.Add("Cam2", Cam2);
+                    Cam3 = reg.Read("Cam3");
+                    ProgramAyarlar.Add("Cam3", Cam3);
 
                 }
                 catch (Exception ee)
@@ -395,8 +408,8 @@ namespace IS_KASSE
                     MessageBox.Show("Register Error!\n" + ee.Message);
                     Application.Exit();
                 }
-                
-                int systemCounter=0;
+
+                int systemCounter = 0;
                 while (systemCounter <= Convert.ToInt16(WaitTime))
                 {
                     System.Threading.Thread.Sleep(1000);
@@ -433,7 +446,7 @@ namespace IS_KASSE
                         }
                     }
                 }
-                 
+
                 db baglanti = new db();
                 PerConn = baglanti.myconn();
                 //DBCheck check = new DBCheck();
@@ -456,13 +469,13 @@ namespace IS_KASSE
                 }
                 catch (Exception ee)
                 {
-                    MessageBox.Show("Einstellung Error!\n" + ee.Message+"\n Bitte Company Tabelle vergleischen!!!");
+                    MessageBox.Show("Einstellung Error!\n" + ee.Message + "\n Bitte Company Tabelle vergleischen!!!");
                     return;
                 }
 
                 if (Screen.AllScreens.Length > 1)
                 {
-                   
+
                     /*if (Program.IsletmeAyarlar["kod"] == "83")
                     {
                           F_KundenDisplay knddsply =  new F_KundenDisplay();
@@ -545,9 +558,9 @@ namespace IS_KASSE
                         }
 
                     }
-                    
+
                 }
-                else if(Modus == "Kiosk")
+                else if (Modus == "Kiosk")
                 {
                     Program.BonBeleg = new Fis();
                     F_Kiosk kiosk = new F_Kiosk();
@@ -565,7 +578,7 @@ namespace IS_KASSE
                     //kiosk.Location = Screen.AllScreens[1].WorkingArea.Location;
                     Application.Run(new F_SelfCheckout());
                     return;
-                    
+
                 }
 
 
@@ -615,23 +628,23 @@ namespace IS_KASSE
             }
             catch (Exception cc)
             {
-                MessageBox.Show("Error!"+ cc.Message);
+                MessageBox.Show("Error!" + cc.Message);
             }
 
         }
 
-       
+
 
         private static bool CheckRunState()
         {
             try
             {
-                
+
                 string mcname = ".";
                 Process[] processes = null;
-                
+
                 processes = Process.GetProcesses(mcname);
-                
+
                 int threadscount = 0;
                 //MessageBox.Show(System.Diagnostics.Process.GetCurrentProcess().ProcessName);
                 foreach (Process p in processes)
@@ -642,17 +655,17 @@ namespace IS_KASSE
                         if (p.ProcessName == System.Diagnostics.Process.GetCurrentProcess().ProcessName)
                         {
                             //StartPortService();
-                            threadscount ++;
+                            threadscount++;
                             if (threadscount > 1)
                             {
                                 MessageBox.Show("Bereits läuft ein Program !");
                                 p.Kill();
 
-                                
+
                             }
                         }
                     }
-                    catch(Exception hh)
+                    catch (Exception hh)
                     {
                         return false;
                     }
