@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="ISS KASSE">
+</Property><Property Name="Solution File" Value="C:\PRO\IS KASSE\IS KASSE TEST DORUK2\IS KASSE\ISS KASSE.sln">
+</Property><Property Name="Date" Value="Donnerstag, 5. Dezember 2019">
+</Property><Property Name="Time" Value="03:01">
+</Property></Properties><Event ErrorLevel="0" Project="ISS KASSE" Source="ISS KASSE.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="ISS KASSE" Source="ISS KASSE.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="2" Project="IS_KASSE_SETUP2.vdproj" Source="..\IS_KASSE_SETUP2\IS_KASSE_SETUP2.vdproj" Description="Unable to open project 'C:\PRO\IS KASSE\IS KASSE TEST DORUK2\IS_KASSE_SETUP2\IS_KASSE_SETUP2.vdproj'.">
+</Event><Event ErrorLevel="3" Project="IS_KASSE_SETUP2.vdproj" Source="..\IS_KASSE_SETUP2\IS_KASSE_SETUP2.vdproj" Description="Not Converted">
+</Event></UpgradeLog>
